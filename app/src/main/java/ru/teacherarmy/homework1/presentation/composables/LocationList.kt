@@ -1,5 +1,6 @@
 package ru.teacherarmy.homework1.presentation.composables
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.Arrangement
@@ -46,6 +47,7 @@ import ru.teacherarmy.homework1.R
 import ru.teacherarmy.homework1.presentation.navigation.NavScreen
 import ru.teacherarmy.homework1.presentation.viewmodels.SearchCityViewModel
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocationList(

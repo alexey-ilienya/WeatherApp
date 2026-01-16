@@ -1,6 +1,7 @@
 package ru.teacherarmy.homework1.presentation.composables
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -46,6 +47,7 @@ import ru.teacherarmy.homework1.presentation.viewmodels.DailyWeatherViewModel
 import ru.teacherarmy.homework1.presentation.viewmodels.HourlyWeatherViewModel
 import ru.teacherarmy.homework1.presentation.viewmodels.SearchCityViewModel
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllWeatherComposable(navController: NavHostController,
