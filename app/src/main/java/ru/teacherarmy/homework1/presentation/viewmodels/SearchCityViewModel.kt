@@ -1,9 +1,5 @@
 package ru.teacherarmy.homework1.presentation.viewmodels
 
-import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +10,7 @@ import kotlinx.coroutines.launch
 import ru.teacherarmy.homework1.domain.model.City
 import ru.teacherarmy.homework1.domain.usecase.DeleteCityUseCase
 import ru.teacherarmy.homework1.domain.usecase.GetSearchResultsUseCase
-import ru.teacherarmy.homework1.domain.usecase.results.Resource
+import ru.teacherarmy.homework1.domain.usecase.results.Result
 import ru.teacherarmy.homework1.presentation.states.SearchResultsState
 import javax.inject.Inject
 
@@ -30,17 +26,17 @@ class SearchCityViewModel @Inject constructor(
     private val _state = MutableStateFlow(SearchResultsState())
     var state = _state.asStateFlow()
 
-    var selectedCity = mutableStateOf<City?>(null)
-        private set
+    private val _selectedCity = MutableStateFlow<City?>(null)
+    var selectedCity = _selectedCity.asStateFlow()
 
-    var switchState by mutableStateOf(true)
-        internal set
+    private val _switchState = MutableStateFlow(true)
+    var switchState = _switchState.asStateFlow()
 
-    var  selectedLatitude = mutableStateOf<Double?>(null)
-        private set
+    private val _selectedLatitude = MutableStateFlow<Double?>(null)
+    var selectedLatitude = _selectedLatitude.asStateFlow()
 
-    var  selectedLongitude = mutableStateOf<Double?>(null)
-        private set
+    private val _selectedLongitude = MutableStateFlow<Double?>(null)
+    var selectedLongitude = _selectedLongitude.asStateFlow()
 
     fun onSearchTextChange(text: String) {
         _searchText.value = text
@@ -48,10 +44,20 @@ class SearchCityViewModel @Inject constructor(
     }
 
     fun toggleSwitchState(b: Boolean) {
-        selectedLongitude.value = null
-        selectedLatitude.value = null
-        switchState = b
+        _selectedLongitude.value = null
+        _selectedLatitude.value = null
+        _switchState.value = b
+    }
 
+    fun clearSelectedCity() {
+        _selectedCity.value = null
+    }
+
+    fun setSelectedCity(city: City) {
+        _selectedCity.value = city
+        _switchState.value = false
+        _selectedLatitude.value = city.latitude
+        _selectedLongitude.value = city.longitude
     }
 
     private fun fetchSearchResults(query: String) {
@@ -61,13 +67,13 @@ class SearchCityViewModel @Inject constructor(
                 val searchResultsFlow = getSearchResults(query)
                 searchResultsFlow.collect { resource ->
                     when (resource) {
-                        is Resource.Success -> {
+                        is Result.Success -> {
                             val data = resource.data
 
                             _state.value = _state.value.copy(data = data, isLoading = false, error = null)
                         }
 
-                        is Resource.Error -> {
+                        is Result.Error -> {
                             _state.value = _state.value.copy(
                                 data = null,
                                 isLoading = false,

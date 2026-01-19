@@ -6,10 +6,22 @@ plugins {
     id 'kotlin-kapt'
 }
 
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader { reader ->
+        localProperties.load(reader)
+    }
+}
+
 android {
     namespace 'ru.teacherarmy.homework1'
     compileSdk {
         version = release(36)
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     defaultConfig {
@@ -20,6 +32,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "WEATHER_API_KEY", "\"${localProperties.getProperty("API_KEY")}\""
     }
 
     buildTypes {

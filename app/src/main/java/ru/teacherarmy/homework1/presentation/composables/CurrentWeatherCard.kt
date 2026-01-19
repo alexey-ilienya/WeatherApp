@@ -12,6 +12,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +32,7 @@ fun CurrentWeatherCard(
     modifier: Modifier,
     currentState: CurrentWeatherState,
     dailyState: DailyWeatherState,
-    currentWeatherViewModel: CurrentWeatherViewModel
+    city: String
 
 ) {
     currentState.data?.let {
@@ -47,7 +48,7 @@ fun CurrentWeatherCard(
             Column(
                 horizontalAlignment = Alignment.Start
             ) {
-                Text(text =  currentWeatherViewModel.city.value, fontSize = 45.sp, fontStyle = FontStyle.Normal,
+                Text(text = city, fontSize = 45.sp, fontStyle = FontStyle.Normal,
                     fontWeight = FontWeight.ExtraBold ,
                     modifier = Modifier.padding(start = 13.dp) )
                 Text(stringResource(R.string.format_degrees, it.temperature), fontSize = 45.sp, fontStyle = FontStyle.Normal,

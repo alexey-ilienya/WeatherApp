@@ -20,17 +20,15 @@ import ru.teacherarmy.homework1.presentation.viewmodels.SearchCityViewModel
 
 @SuppressLint("RememberReturnType", "SuspiciousIndentation")
 @Composable
-fun AppNavigation(   ) {
+fun AppNavigation(currentWeatherViewModel: CurrentWeatherViewModel,
+                  dailyWeatherViewModel: DailyWeatherViewModel,
+                  hourlyWeatherViewModel: HourlyWeatherViewModel,
+                  searchCityViewModel: SearchCityViewModel) {
 
     val navController = rememberNavController()
     val savedStateHandle = remember {
         SavedStateHandle()
     }
-
-    val searchCityViewModel: SearchCityViewModel = hiltViewModel()
-    val currentWeatherViewModel: CurrentWeatherViewModel = hiltViewModel()
-    val dailyWeatherViewModel: DailyWeatherViewModel = hiltViewModel()
-    val hourlyWeatherViewModel: HourlyWeatherViewModel = hiltViewModel()
 
     NavHost(navController = navController, startDestination = NavScreen.Home.route){
 

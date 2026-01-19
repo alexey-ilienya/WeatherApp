@@ -1,44 +1,32 @@
 package ru.teacherarmy.homework1.domain.model
 
-import androidx.annotation.DrawableRes
-import ru.teacherarmy.homework1.R
-
 sealed class WeatherType(
     val weatherDesc: String,
-    @DrawableRes val iconRes: Int,
 
     ) {
     object ClearSky : WeatherType(
-        weatherDesc = "ясно",
-        iconRes = R.drawable.clear_sky
+        weatherDesc = "ясно"
     )
     object FewClouds : WeatherType(
-        weatherDesc = "малооблачно",
-        iconRes = R.drawable.few_clouds
+        weatherDesc = "малооблачно"
     )
     object ShowerRain : WeatherType(
-        weatherDesc = "ливень",
-        iconRes = R.drawable.shower_rain
+        weatherDesc = "ливень"
     )
     object Overcast : WeatherType(
-        weatherDesc = "облачно с прояснениями",
-        iconRes = R.drawable.scattered_clouds
+        weatherDesc = "облачно с прояснениями"
     )
     object ScatteredClouds : WeatherType(
-        weatherDesc = "пасмурно",
-        iconRes = R.drawable.scattered_clouds
+        weatherDesc = "пасмурно"
     )
     object Rain : WeatherType(
-        weatherDesc = "дождь",
-        iconRes = R.drawable.rain
+        weatherDesc = "дождь"
     )
     object Snow : WeatherType(
-        weatherDesc = "небольшой снег",
-        iconRes = R.drawable.snow
+        weatherDesc = "небольшой снег"
     )
     object Mist : WeatherType(
-        weatherDesc = "туман",
-        iconRes = R.drawable.mist
+        weatherDesc = "туман"
     )
 
     companion object {

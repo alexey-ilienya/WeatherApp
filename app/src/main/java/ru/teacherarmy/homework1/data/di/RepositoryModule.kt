@@ -1,5 +1,6 @@
 package ru.teacherarmy.homework1.data.di
 
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,16 +16,12 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class RepositoryModule {
-    @Provides
+abstract class RepositoryModule {
     @Singleton
-    fun provideWeatherRepository(weatherApi: WeatherApi): WeatherRepository {
-        return WeatherRepoImpl(weatherApi)
-    }
+    @Binds
+    abstract fun provideWeatherRepository(weatherRepoImpl: WeatherRepoImpl): WeatherRepository
 
-    @Provides
     @Singleton
-    fun  provideSearchRepository(searchApi: SearchApi, cityDao: CityDao) : SearchResultsRepository {
-        return SearchRepoImpl(searchApi, cityDao)
-    }
+    @Binds
+    abstract fun provideSearchRepository(searchRepoImpl: SearchRepoImpl) : SearchResultsRepository
 }

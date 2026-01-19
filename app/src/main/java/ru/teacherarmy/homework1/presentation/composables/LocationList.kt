@@ -58,6 +58,10 @@ fun LocationList(
 
     val allCities by searchCityViewModel.allCities.collectAsState(emptyList())
 
+    val selectedCity by searchCityViewModel.selectedCity.collectAsState()
+
+    val switchState by searchCityViewModel.switchState.collectAsState()
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -86,7 +90,7 @@ fun LocationList(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(90.dp))
-            SwitchWithIcon(searchCityViewModel)
+            SwitchWithIcon(switchState, searchCityViewModel)
             LazyColumn(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -102,11 +106,8 @@ fun LocationList(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RadioButton(
-                            selected = searchCityViewModel.selectedCity.value == it, onClick = {
-                                searchCityViewModel.selectedCity.value= it
-                                searchCityViewModel.switchState =false
-                                searchCityViewModel.selectedLatitude.value = it.latitude
-                                searchCityViewModel.selectedLongitude.value = it.longitude
+                            selected = selectedCity == it, onClick = {
+                                searchCityViewModel.setSelectedCity(it)
                             }, modifier =
                                 Modifier.padding(start = 19.dp)
                         )
@@ -137,7 +138,7 @@ fun LocationList(
 }
 
 @Composable
-fun SwitchWithIcon(searchCityViewModel: SearchCityViewModel) {
+fun SwitchWithIcon(value: Boolean, searchCityViewModel: SearchCityViewModel) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -148,16 +149,15 @@ fun SwitchWithIcon(searchCityViewModel: SearchCityViewModel) {
             .fillMaxWidth()
             .padding(20.dp)
             .toggleable(
-                value =searchCityViewModel.switchState ,
+                value = value ,
                 onValueChange = {
-                    searchCityViewModel.selectedCity.value = null
+                    searchCityViewModel.clearSelectedCity()
                     searchCityViewModel.toggleSwitchState(it)
-
                 },
                 role = Role.Switch,
             )
     ) {
         Text(text = stringResource(R.string.current_location), fontSize = 20.sp)
-        Switch(checked = searchCityViewModel.switchState, onCheckedChange = null)
+        Switch(checked = value, onCheckedChange = null)
     }
 }

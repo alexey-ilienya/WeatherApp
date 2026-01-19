@@ -4,16 +4,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.teacherarmy.homework1.domain.model.CurrentWeather
 import ru.teacherarmy.homework1.domain.repository.WeatherRepository
-import ru.teacherarmy.homework1.domain.usecase.results.Resource
+import ru.teacherarmy.homework1.domain.usecase.results.Result
 import javax.inject.Inject
 
 class GetCurrentWeatherUseCase @Inject constructor(private val weatherRepo: WeatherRepository) {
 
-    operator fun invoke(lat:Double, lon:Double): Flow<Resource<CurrentWeather>> = flow {
+    operator fun invoke(lat:Double, lon:Double): Flow<Result<CurrentWeather>> = flow {
         try {
-            emit(Resource.Success(weatherRepo.getCurrentWeather(lat, lon)))
+            emit(Result.Success(weatherRepo.getCurrentWeather(lat, lon)))
         } catch (e: Exception) {
-            emit(Resource.Error(e.message))
+            emit(Result.Error(e.message))
         }
     }
 }

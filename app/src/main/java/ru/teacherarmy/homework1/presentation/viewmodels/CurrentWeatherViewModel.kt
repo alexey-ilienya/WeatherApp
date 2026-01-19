@@ -3,20 +3,17 @@ package ru.teacherarmy.homework1.presentation.viewmodels
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Geocoder
-import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.teacherarmy.homework1.domain.location.LocationTracker
 import ru.teacherarmy.homework1.domain.usecase.GetCurrentWeatherUseCase
-import ru.teacherarmy.homework1.domain.usecase.results.Resource
+import ru.teacherarmy.homework1.domain.usecase.results.Result
 import ru.teacherarmy.homework1.presentation.states.CurrentWeatherState
 import java.util.Locale
 import javax.inject.Inject
@@ -28,15 +25,15 @@ class CurrentWeatherViewModel @Inject constructor(
     private val getCurrentWeather: GetCurrentWeatherUseCase
 ) : ViewModel() {
 
-    private val _city = mutableStateOf("")
-    var city: State<String> = _city
-    var state by mutableStateOf(CurrentWeatherState())
-        private set
+    private val _city = MutableStateFlow("")
+    var city = _city.asStateFlow()
+    private val _state = MutableStateFlow(CurrentWeatherState())
+    var state = _state.asStateFlow()
     @SuppressLint("SuspiciousIndentation")
     fun fetchCurrentWeather(latitude: Double? = null, longitude: Double? = null) {
         viewModelScope.launch {
 
-            state= state.copy(isLoading = true)
+            _state.value = state.value.copy(isLoading = true)
 
             try {
                 val location = if (latitude != null && longitude != null) {
@@ -46,7 +43,7 @@ class CurrentWeatherViewModel @Inject constructor(
                     if (currentlocation != null) {
                         Pair(currentlocation.latitude, currentlocation.longitude)
                     } else {
-                        state = state.copy(
+                        _state.value = _state.value.copy(
                             isLoading = false,
                             data = null,
                             error = "Location not available"
@@ -59,18 +56,18 @@ class CurrentWeatherViewModel @Inject constructor(
 
                 weatherFlow.collect { resource->
                     when (resource) {
-                        is Resource.Success -> {
-                            state = state.copy(isLoading = false, data = resource.data,error = null)
+                        is Result.Success -> {
+                            _state.value = _state.value.copy(isLoading = false, data = resource.data,error = null)
                         }
-                        is Resource.Error -> {
-                            state = state.copy(isLoading = false, data = resource.data,error = null)
+                        is Result.Error -> {
+                            _state.value = _state.value.copy(isLoading = false, data = resource.data,error = null)
                         }
 
                     }
                 }
 
             } catch (e: Exception) {
-                state = state.copy(isLoading = false, data =null,error = e.localizedMessage)
+                _state.value = _state.value.copy(isLoading = false, data =null,error = e.localizedMessage)
             }
         }
     }

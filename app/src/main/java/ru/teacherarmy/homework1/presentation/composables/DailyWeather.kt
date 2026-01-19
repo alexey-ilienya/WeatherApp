@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.os.ConfigurationCompat
 import ru.teacherarmy.homework1.R
 import ru.teacherarmy.homework1.domain.model.Daily
+import ru.teacherarmy.homework1.presentation.mapper.getDrawableResId
 import ru.teacherarmy.homework1.presentation.states.DailyWeatherState
 import java.time.DayOfWeek
 import java.time.format.TextStyle
@@ -59,7 +60,7 @@ fun WeatherItem(dayOfWeek: DayOfWeek, dailyWeatherList: List<Daily>) {
 
         dailyWeatherList.forEach { dailyWeatherItem ->
 
-            Image(painter = painterResource(id = dailyWeatherItem.weatherType.iconRes) ,
+            Image(painter = painterResource(id = dailyWeatherItem.weatherType.getDrawableResId()) ,
                 contentDescription =null, modifier = Modifier.size(50.dp) )
 
             Text(

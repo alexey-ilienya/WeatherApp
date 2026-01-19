@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.teacherarmy.homework1.R
 import ru.teacherarmy.homework1.domain.model.Hourly
+import ru.teacherarmy.homework1.presentation.mapper.getDrawableResId
 import ru.teacherarmy.homework1.presentation.states.HourlyWeatherState
 import java.time.format.DateTimeFormatter
 
@@ -72,7 +73,7 @@ fun HourlyWeatherItem(hourlyWeather: Hourly) {
 
         Spacer(modifier = Modifier.width(50.dp))
 
-        Image(painter = painterResource(id = hourlyWeather.weatherType.iconRes),
+        Image(painter = painterResource(id = hourlyWeather.weatherType.getDrawableResId()),
             contentDescription = null, modifier = Modifier.size(50.dp) )
 
         Spacer(modifier = Modifier.width(50.dp))
