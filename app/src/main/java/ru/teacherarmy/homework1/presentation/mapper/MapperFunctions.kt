@@ -2,9 +2,9 @@ package ru.teacherarmy.homework1.presentation.mapper
 
 import androidx.annotation.DrawableRes
 import ru.teacherarmy.homework1.R
-import ru.teacherarmy.homework1.domain.model.City
-import ru.teacherarmy.homework1.domain.model.SearchResults
-import ru.teacherarmy.homework1.domain.model.WeatherType
+import ru.teacherarmy.domain.model.City
+import ru.teacherarmy.domain.model.SearchResults
+import ru.teacherarmy.domain.model.WeatherType
 
 fun SearchResults.toDomainModel(): City {
     return City(

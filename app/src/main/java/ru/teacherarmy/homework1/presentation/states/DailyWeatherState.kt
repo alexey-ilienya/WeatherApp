@@ -1,6 +1,6 @@
 package ru.teacherarmy.homework1.presentation.states
 
-import ru.teacherarmy.homework1.domain.model.Daily
+import ru.teacherarmy.domain.model.Daily
 import java.time.DayOfWeek
 
 data class DailyWeatherState(

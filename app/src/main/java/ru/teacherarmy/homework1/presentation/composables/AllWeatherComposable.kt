@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.SavedStateHandle
@@ -61,6 +62,7 @@ fun AllWeatherComposable(navController: NavHostController,
 ) {
     lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
 
+    val context = LocalContext.current
     val state = viewModel.state.collectAsState()
     val dailyState = dailyWeatherViewModel.state.collectAsState()
     var permissionStatus by remember { mutableStateOf(false) }
@@ -96,11 +98,11 @@ fun AllWeatherComposable(navController: NavHostController,
     }
     LaunchedEffect( switchState, refreshWeather, selectedLatitude, selectedLongitude, permissionStatus) {
         if (refreshWeather || selectedLatitude != null && selectedLongitude != null) {
-            viewModel.fetchCurrentWeather(selectedLatitude.value, selectedLongitude.value)
+            viewModel.fetchCurrentWeather(context, selectedLatitude.value, selectedLongitude.value)
             dailyWeatherViewModel.fetchDailyWeather(selectedLatitude.value, selectedLongitude.value)
             hourlyWeatherViewModel.fetchHourlyWeather(selectedLatitude.value, selectedLongitude.value)
         } else if ( refreshWeather ||permissionStatus || switchState.value) {
-            viewModel.fetchCurrentWeather()
+            viewModel.fetchCurrentWeather(context)
             dailyWeatherViewModel.fetchDailyWeather()
             hourlyWeatherViewModel.fetchHourlyWeather()
         }

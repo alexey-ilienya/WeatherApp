@@ -11,16 +11,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.teacherarmy.homework1.domain.location.LocationTracker
-import ru.teacherarmy.homework1.domain.usecase.GetCurrentWeatherUseCase
-import ru.teacherarmy.homework1.domain.usecase.results.Result
+import ru.teacherarmy.domain.usecase.results.Result
+import ru.teacherarmy.domain.location.LocationTracker
+import ru.teacherarmy.domain.usecase.GetCurrentWeatherUseCase
 import ru.teacherarmy.homework1.presentation.states.CurrentWeatherState
 import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class CurrentWeatherViewModel @Inject constructor(
-    private val context : Context,
     private val locationTracker: LocationTracker,
     private val getCurrentWeather: GetCurrentWeatherUseCase
 ) : ViewModel() {
@@ -30,7 +29,7 @@ class CurrentWeatherViewModel @Inject constructor(
     private val _state = MutableStateFlow(CurrentWeatherState())
     var state = _state.asStateFlow()
     @SuppressLint("SuspiciousIndentation")
-    fun fetchCurrentWeather(latitude: Double? = null, longitude: Double? = null) {
+    fun fetchCurrentWeather(context: Context, latitude: Double? = null, longitude: Double? = null) {
         viewModelScope.launch {
 
             _state.value = state.value.copy(isLoading = true)
@@ -51,7 +50,7 @@ class CurrentWeatherViewModel @Inject constructor(
                         return@launch
                     }
                 }
-                _city.value = getCityName(location.first, location.second).toString()
+                _city.value = getCityName(context, location.first, location.second).toString()
                 val weatherFlow = getCurrentWeather.invoke(location.first, location.first)
 
                 weatherFlow.collect { resource->
@@ -72,7 +71,7 @@ class CurrentWeatherViewModel @Inject constructor(
         }
     }
 
-    suspend fun getCityName(latitude: Double, longitude: Double): String? {
+    suspend fun getCityName(context: Context, latitude: Double, longitude: Double): String? {
         return withContext(Dispatchers.IO) {
             val geocoder = Geocoder(  context, Locale.getDefault())
             try {

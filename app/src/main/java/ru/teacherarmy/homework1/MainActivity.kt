@@ -26,12 +26,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val currentWeatherViewModel: CurrentWeatherViewModel = hiltViewModel()
-                    val dailyWeatherViewModel: DailyWeatherViewModel = hiltViewModel()
-                    val hourlyWeatherViewModel: HourlyWeatherViewModel = hiltViewModel()
-                    val searchCityViewModel: SearchCityViewModel = hiltViewModel()
-
-                    AppNavigation(currentWeatherViewModel, dailyWeatherViewModel, hourlyWeatherViewModel, searchCityViewModel)
+                    AppNavigation()
                 }
             }
         }

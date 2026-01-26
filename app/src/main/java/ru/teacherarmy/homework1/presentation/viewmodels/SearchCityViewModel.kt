@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ru.teacherarmy.homework1.domain.model.City
-import ru.teacherarmy.homework1.domain.usecase.DeleteCityUseCase
-import ru.teacherarmy.homework1.domain.usecase.GetSearchResultsUseCase
-import ru.teacherarmy.homework1.domain.usecase.results.Result
+import ru.teacherarmy.domain.model.City
+import ru.teacherarmy.domain.usecase.results.Result
+import ru.teacherarmy.domain.usecase.DeleteCityUseCase
+import ru.teacherarmy.domain.usecase.GetSearchResultsUseCase
 import ru.teacherarmy.homework1.presentation.states.SearchResultsState
 import javax.inject.Inject
 

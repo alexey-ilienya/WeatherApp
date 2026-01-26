@@ -20,10 +20,7 @@ import ru.teacherarmy.homework1.presentation.viewmodels.SearchCityViewModel
 
 @SuppressLint("RememberReturnType", "SuspiciousIndentation")
 @Composable
-fun AppNavigation(currentWeatherViewModel: CurrentWeatherViewModel,
-                  dailyWeatherViewModel: DailyWeatherViewModel,
-                  hourlyWeatherViewModel: HourlyWeatherViewModel,
-                  searchCityViewModel: SearchCityViewModel) {
+fun AppNavigation() {
 
     val navController = rememberNavController()
     val savedStateHandle = remember {
@@ -33,18 +30,18 @@ fun AppNavigation(currentWeatherViewModel: CurrentWeatherViewModel,
     NavHost(navController = navController, startDestination = NavScreen.Home.route){
 
         composable(NavScreen.Home.route) { backStackEntry ->
-            AllWeatherComposable(navController, searchCityViewModel = searchCityViewModel, handle = savedStateHandle
-                , viewModel = currentWeatherViewModel, dailyWeatherViewModel = dailyWeatherViewModel,
-                hourlyWeatherViewModel = hourlyWeatherViewModel)
+            AllWeatherComposable(navController, searchCityViewModel = hiltViewModel(), handle = savedStateHandle
+                , viewModel = hiltViewModel(), dailyWeatherViewModel = hiltViewModel(),
+                hourlyWeatherViewModel = hiltViewModel())
         }
 
         composable(NavScreen.Locations.route) { backStackEntry ->
-            LocationList(navController, searchCityViewModel)
+            LocationList(navController, hiltViewModel())
         }
 
 
         composable(NavScreen.Search.route){ backStackEntry ->
-            SearchLocation(navController, searchCityViewModel)
+            SearchLocation(navController, hiltViewModel())
         }
 
     }

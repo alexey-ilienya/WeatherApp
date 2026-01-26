@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.teacherarmy.homework1.R
-import ru.teacherarmy.homework1.domain.model.Hourly
+import ru.teacherarmy.domain.model.Hourly
 import ru.teacherarmy.homework1.presentation.mapper.getDrawableResId
 import ru.teacherarmy.homework1.presentation.states.HourlyWeatherState
 import java.time.format.DateTimeFormatter
@@ -37,6 +37,7 @@ fun HourlyWeather(
 ) {
     state.data?.let {
         val formatter = DateTimeFormatter.ofPattern("EEEE, d MMM", getCurrentLocale())
+        val hourly = it[0]
         val today = remember(it) {
             it[0].time.format(formatter).uppercase()
         }

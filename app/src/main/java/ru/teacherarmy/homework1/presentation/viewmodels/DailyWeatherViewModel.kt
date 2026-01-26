@@ -6,9 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ru.teacherarmy.homework1.domain.location.LocationTracker
-import ru.teacherarmy.homework1.domain.usecase.GetDailyWeatherUseCase
-import ru.teacherarmy.homework1.domain.usecase.results.Result
+import ru.teacherarmy.domain.usecase.results.Result
+import ru.teacherarmy.domain.location.LocationTracker
+import ru.teacherarmy.domain.usecase.GetDailyWeatherUseCase
 import ru.teacherarmy.homework1.presentation.states.DailyWeatherState
 import javax.inject.Inject
 

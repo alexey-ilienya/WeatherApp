@@ -1,6 +1,6 @@
 package ru.teacherarmy.homework1.presentation.states
 
-import ru.teacherarmy.homework1.domain.model.CurrentWeather
+import ru.teacherarmy.domain.model.CurrentWeather
 
 data class CurrentWeatherState(
     val isLoading : Boolean = false,
