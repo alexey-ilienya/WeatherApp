@@ -25,9 +25,9 @@ class CurrentWeatherViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _city = MutableStateFlow("")
-    var city = _city.asStateFlow()
+    val city = _city.asStateFlow()
     private val _state = MutableStateFlow(CurrentWeatherState())
-    var state = _state.asStateFlow()
+    val state = _state.asStateFlow()
     @SuppressLint("SuspiciousIndentation")
     fun fetchCurrentWeather(context: Context, latitude: Double? = null, longitude: Double? = null) {
         viewModelScope.launch {

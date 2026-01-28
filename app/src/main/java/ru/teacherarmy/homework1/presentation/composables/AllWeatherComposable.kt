@@ -56,25 +56,11 @@ fun AllWeatherComposable(navController: NavHostController,
                          viewModel: CurrentWeatherViewModel,
                          dailyWeatherViewModel: DailyWeatherViewModel,
                          hourlyWeatherViewModel: HourlyWeatherViewModel,
-                         searchCityViewModel: SearchCityViewModel,
-                         handle:SavedStateHandle
+                         searchCityViewModel: SearchCityViewModel
 
 ) {
-    lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
-
-    val context = LocalContext.current
-    val state = viewModel.state.collectAsState()
-    val dailyState = dailyWeatherViewModel.state.collectAsState()
     var permissionStatus by remember { mutableStateOf(false) }
-
-    val selectedLatitude = searchCityViewModel.selectedLatitude.collectAsState()
-    val selectedLongitude = searchCityViewModel.selectedLongitude.collectAsState()
-    val switchState = searchCityViewModel.switchState.collectAsState()
-
-    var refreshWeather by remember { mutableStateOf(false) }
-
-
-    permissionLauncher = rememberLauncherForActivityResult(
+    val permissionLauncher: ActivityResultLauncher<Array<String>> = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         val granted =
@@ -85,6 +71,16 @@ fun AllWeatherComposable(navController: NavHostController,
             permissionStatus = true
         }
     }
+
+    val context = LocalContext.current
+    val state = viewModel.state.collectAsState()
+    val dailyState = dailyWeatherViewModel.state.collectAsState()
+
+    val selectedLatitude = searchCityViewModel.selectedLatitude.collectAsState()
+    val selectedLongitude = searchCityViewModel.selectedLongitude.collectAsState()
+    val switchState = searchCityViewModel.switchState.collectAsState()
+
+    var refreshWeather by remember { mutableStateOf(false) }
 
     LaunchedEffect(permissionStatus) {
         if (!permissionStatus) {
@@ -113,7 +109,7 @@ fun AllWeatherComposable(navController: NavHostController,
     if (state.value.isLoading) {
         CircularProgressBar()
     } else if (state.value.error != null) {
-        ErrorText(state.value.error!!)
+        ErrorText(state.value.error ?: "")
     } else {
         AllWeatherLoadedComposable(navController = navController,
             state = state.value,

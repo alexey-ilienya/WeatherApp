@@ -21,22 +21,22 @@ class SearchCityViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _searchText = MutableStateFlow("")
-    var searchText = _searchText.asStateFlow()
+    val searchText = _searchText.asStateFlow()
 
     private val _state = MutableStateFlow(SearchResultsState())
-    var state = _state.asStateFlow()
+    val state = _state.asStateFlow()
 
     private val _selectedCity = MutableStateFlow<City?>(null)
-    var selectedCity = _selectedCity.asStateFlow()
+    val selectedCity = _selectedCity.asStateFlow()
 
     private val _switchState = MutableStateFlow(true)
-    var switchState = _switchState.asStateFlow()
+    val switchState = _switchState.asStateFlow()
 
     private val _selectedLatitude = MutableStateFlow<Double?>(null)
-    var selectedLatitude = _selectedLatitude.asStateFlow()
+    val selectedLatitude = _selectedLatitude.asStateFlow()
 
     private val _selectedLongitude = MutableStateFlow<Double?>(null)
-    var selectedLongitude = _selectedLongitude.asStateFlow()
+    val selectedLongitude = _selectedLongitude.asStateFlow()
 
     fun onSearchTextChange(text: String) {
         _searchText.value = text

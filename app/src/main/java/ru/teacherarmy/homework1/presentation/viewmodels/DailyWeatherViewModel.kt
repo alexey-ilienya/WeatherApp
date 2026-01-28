@@ -18,7 +18,7 @@ class DailyWeatherViewModel @Inject constructor(
     private val getDailyWeather: GetDailyWeatherUseCase
 ):ViewModel() {
     private val _state = MutableStateFlow(DailyWeatherState())
-    var state = _state.asStateFlow()
+    val state = _state.asStateFlow()
 
     fun fetchDailyWeather(latitude: Double? = null, longitude: Double? = null) {
         viewModelScope.launch {

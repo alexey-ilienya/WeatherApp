@@ -37,7 +37,6 @@ fun HourlyWeather(
 ) {
     state.data?.let {
         val formatter = DateTimeFormatter.ofPattern("EEEE, d MMM", getCurrentLocale())
-        val hourly = it[0]
         val today = remember(it) {
             it[0].time.format(formatter).uppercase()
         }

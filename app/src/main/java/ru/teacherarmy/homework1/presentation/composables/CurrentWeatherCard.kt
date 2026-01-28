@@ -51,9 +51,10 @@ fun CurrentWeatherCard(
                 Text(text = city, fontSize = 45.sp, fontStyle = FontStyle.Normal,
                     fontWeight = FontWeight.ExtraBold ,
                     modifier = Modifier.padding(start = 13.dp) )
-                Text(stringResource(R.string.format_degrees, it.temperature), fontSize = 45.sp, fontStyle = FontStyle.Normal,
-                    fontWeight = FontWeight.ExtraBold, modifier =
-                        Modifier.padding(start = 13.dp, bottom = 13.dp))
+                Text(stringResource(R.string.format_degrees, it.temperature), fontSize = 45.sp,
+                    fontStyle = FontStyle.Normal,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier.padding(start = 13.dp, bottom = 13.dp))
 
                 Spacer(modifier = Modifier.height(3.dp))
 

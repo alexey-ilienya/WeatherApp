@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -44,56 +45,12 @@ import ru.teacherarmy.homework1.presentation.viewmodels.SearchCityViewModel
 @Composable
 fun SearchLocation(navController: NavHostController, viewModel: SearchCityViewModel) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val searchText by viewModel.searchText.collectAsState()
     val state by viewModel.state.collectAsState()
 
     Scaffold(
         modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = { },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "back")
-
-                    }
-                },
-                scrollBehavior = scrollBehavior,
-                actions = {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 40.dp),
-                        contentAlignment = Alignment.CenterEnd
-                    ) {
-                        TextField(
-                            value = searchText,
-                            onValueChange = {
-                                viewModel.onSearchTextChange(it)
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            placeholder = {
-                                Text(stringResource(R.string.search_hint))
-                            },
-                            singleLine = true,
-                            maxLines = 1,
-                        )
-                        IconButton(
-                            onClick = {
-                                viewModel.onSearchTextChange("")
-                            },
-                            modifier = Modifier.padding(end = 8.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Clear,
-                                contentDescription = "Clear",
-                                tint = Color.Gray
-                            )
-                        }
-                    }
-                }
-            )
+            SearchTopAppBar(navController = navController, viewModel = viewModel, scrollBehavior = scrollBehavior)
         },
     ) {
         if (!state.isLoading) {
@@ -140,4 +97,59 @@ fun SearchLocation(navController: NavHostController, viewModel: SearchCityViewMo
             )
         }
     }
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchTopAppBar(navController: NavHostController,
+                    viewModel: SearchCityViewModel,
+                    scrollBehavior: TopAppBarScrollBehavior
+) {
+    val searchText by viewModel.searchText.collectAsState()
+
+    TopAppBar(
+        title = { },
+        navigationIcon = {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "back")
+
+            }
+        },
+        scrollBehavior = scrollBehavior,
+        actions = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 40.dp),
+                contentAlignment = Alignment.CenterEnd
+            ) {
+                TextField(
+                    value = searchText,
+                    onValueChange = {
+                        viewModel.onSearchTextChange(it)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    placeholder = {
+                        Text(stringResource(R.string.search_hint))
+                    },
+                    singleLine = true,
+                    maxLines = 1,
+                )
+                IconButton(
+                    onClick = {
+                        viewModel.onSearchTextChange("")
+                    },
+                    modifier = Modifier.padding(end = 8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = "Clear",
+                        tint = Color.Gray
+                    )
+                }
+            }
+        }
+    )
 }

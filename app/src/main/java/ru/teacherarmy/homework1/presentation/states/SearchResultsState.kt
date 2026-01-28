@@ -7,3 +7,4 @@ data class SearchResultsState (
     val data : List<SearchResults>? = null,
     val error : String? = null
 )
+

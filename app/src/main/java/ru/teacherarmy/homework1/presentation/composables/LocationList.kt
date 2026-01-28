@@ -50,15 +50,11 @@ import ru.teacherarmy.homework1.presentation.viewmodels.SearchCityViewModel
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LocationList(
+fun LocationsScreen(
     navController: NavHostController,
     searchCityViewModel: SearchCityViewModel
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
-    val allCities by searchCityViewModel.allCities.collectAsState(emptyList())
-
-    val selectedCity by searchCityViewModel.selectedCity.collectAsState()
 
     val switchState by searchCityViewModel.switchState.collectAsState()
 
@@ -91,40 +87,7 @@ fun LocationList(
         ) {
             Spacer(modifier = Modifier.height(90.dp))
             SwitchWithIcon(switchState, searchCityViewModel)
-            LazyColumn(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 50.dp),
-                flingBehavior = ScrollableDefaults.flingBehavior(),
-                userScrollEnabled = true
-
-            ) {
-                items(allCities) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = selectedCity == it, onClick = {
-                                searchCityViewModel.setSelectedCity(it)
-                            }, modifier =
-                                Modifier.padding(start = 19.dp)
-                        )
-                        Text(text = it.name ?: "", fontSize = 19.sp)
-
-                        IconButton(onClick = { searchCityViewModel.deleteCity(city = it) }) {
-                            Icon(
-                                imageVector = Icons.Default.Clear,
-                                modifier = Modifier.padding(end = 15.dp),
-                                contentDescription = "deletecity"
-                            )
-                        }
-                    }
-                }
-
-
-            }
+            LocationList(searchCityViewModel)
             Divider(
                 modifier = Modifier
                     .padding(20.dp)
@@ -134,6 +97,51 @@ fun LocationList(
             )
 
         }
+    }
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LocationList(
+    searchCityViewModel: SearchCityViewModel
+) {
+    val allCities by searchCityViewModel.allCities.collectAsState(emptyList())
+
+    val selectedCity by searchCityViewModel.selectedCity.collectAsState()
+
+    LazyColumn(
+        modifier = Modifier
+            .padding(top = 50.dp),
+        flingBehavior = ScrollableDefaults.flingBehavior(),
+        userScrollEnabled = true
+
+    ) {
+        items(allCities) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = selectedCity == it, onClick = {
+                        searchCityViewModel.setSelectedCity(it)
+                    }, modifier =
+                        Modifier.padding(start = 19.dp)
+                )
+                Text(text = it.name ?: "", fontSize = 19.sp)
+
+                IconButton(onClick = { searchCityViewModel.deleteCity(city = it) }) {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        modifier = Modifier.padding(end = 15.dp),
+                        contentDescription = "deletecity"
+                    )
+                }
+            }
+        }
+
+
     }
 }
 

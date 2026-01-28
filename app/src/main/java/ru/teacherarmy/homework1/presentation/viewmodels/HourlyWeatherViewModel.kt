@@ -20,7 +20,7 @@ class HourlyWeatherViewModel @Inject constructor(
 ): ViewModel() {
 
     private val _state = MutableStateFlow(HourlyWeatherState())
-    var state = _state.asStateFlow()
+    val state = _state.asStateFlow()
 
     @SuppressLint("SuspiciousIndentation")
     fun fetchHourlyWeather(latitude: Double? = null, longitude: Double? = null) {
