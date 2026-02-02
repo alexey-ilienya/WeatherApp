@@ -82,6 +82,8 @@ dependencies {
 
     detektPlugins(libs.faire.detekt.rules)
     detektPlugins(libs.hbmartin.detekt.rules)
+
+    lintChecks project(':check')
 }
 
 configurations.all {

@@ -12,6 +12,7 @@ hilt = "2.54"
 appcompat = "1.7.1"
 material = "1.13.0"
 playServicesLocation = "21.3.0"
+lint = '31.5.1'
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,13 +32,35 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
+lint-api = { group = "com.android.tools.lint", name = "lint-api", version.ref = "lint" }
+lint-checks = { group = "com.android.tools.lint", name = "lint-checks", version.ref = "lint" }
+lint-cli = { group = "com.android.tools.lint", name = "lint", version.ref = "lint" }
+lint-tests = { group = "com.android.tools.lint", name = "lint-tests", version.ref = "lint" }
 faire-detekt-rules = { module = "com.faire:faire-detekt-rules", version = "0.5.3" }
 hbmartin-detekt-rules = { module = "me.haroldmartin:hbmartin-detekt-rules", version = "0.1.7" }
+
+[bundles]
+lint-api = [
+    "kotlin-stdlib",
+    "lint-api",
+    # You typically don't need this one, but it does have some utilities
+    # like the API database that some lint checks may want to use
+    #"lint-checks",
+]
+lint-tests = [
+    "junit",
+    "lint-cli",
+    "lint-tests"
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
 detekt = {id = "io.gitlab.arturbosch.detekt", version = "1.23.8"}
+#noinspection GradlePluginVersion
+android-lint = {id = "com.android.lint", version.ref = "agp"}
