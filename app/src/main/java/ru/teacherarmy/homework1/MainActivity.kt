@@ -9,11 +9,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import ru.teacherarmy.homework1.presentation.navigation.AppNavigation
-import ru.teacherarmy.homework1.presentation.viewmodels.CurrentWeatherViewModel
-import ru.teacherarmy.homework1.presentation.viewmodels.DailyWeatherViewModel
-import ru.teacherarmy.homework1.presentation.viewmodels.HourlyWeatherViewModel
-import ru.teacherarmy.homework1.presentation.viewmodels.SearchCityViewModel
+import ru.teacherarmy.presentation.navigation.AppNavigation
+import ru.teacherarmy.presentation.viewmodels.CurrentWeatherViewModel
+import ru.teacherarmy.presentation.viewmodels.DailyWeatherViewModel
+import ru.teacherarmy.presentation.viewmodels.HourlyWeatherViewModel
+import ru.teacherarmy.presentation.viewmodels.SearchCityViewModel
 import ru.teacherarmy.homework1.ui.theme.WeatherAppTheme
 
 @AndroidEntryPoint

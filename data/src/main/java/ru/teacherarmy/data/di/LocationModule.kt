@@ -7,7 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.teacherarmy.data.location.DefaultLocationTracker
-import ru.teacherarmy.domain.location.LocationTracker
+import ru.teacherarmy.data.location.LocationTracker
 import javax.inject.Singleton
 
 @Module
