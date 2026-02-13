@@ -6,10 +6,10 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import androidx.annotation.RequiresPermission
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import kotlinx.coroutines.suspendCancellableCoroutine
-import ru.teacherarmy.domain.location.LocationTracker
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
@@ -18,6 +18,7 @@ class DefaultLocationTracker @Inject constructor(
     private val application: Application
 ): LocationTracker {
 
+    @RequiresPermission(anyOf = [android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION])
     override suspend fun getLocation(): Location? {
         val hasAccessFineLocationPermission = ContextCompat.checkSelfPermission(
             application,
@@ -35,7 +36,7 @@ class DefaultLocationTracker @Inject constructor(
             return null
         }
 
-        return suspendCancellableCoroutine { cont ->
+        return suspendCancellableCoroutine  { cont ->
             locationClient.lastLocation.apply {
                 if(isComplete) {
                     if(isSuccessful) {

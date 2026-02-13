@@ -2,11 +2,13 @@
 .gradle
 /local.properties
 /.idea/caches
+/.idea/inspectionProfiles
 /.idea/libraries
 /.idea/AndroidProjectSystem.xml
 /.idea/compiler.xml
 /.idea/deploymentTargetSelector.xml
 /.idea/gradle.xml
+/.idea/kotlinc.xml
 /.idea/migrations.xml
 /.idea/misc.xml
 /.idea/modules.xml

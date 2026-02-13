@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Homework1</string>
+
+    <string name="format_degrees">%.2f°</string>
+    <string name="format_wind_speed">%.2f м/с</string>
+    <string name="search_hint">Введите название</string>
+    <string name="locations_title">Места</string>
+    <string name="current_location">Текущее</string>
+</resources>
