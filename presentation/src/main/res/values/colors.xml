@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="example_1_selection_color">#FCCA3E</color>
+    <color name="inactive_text_color">#BEBEBE</color>
+    <color name="example_4_grey">#474747</color>
+    <color name="nav_container_color">#9299AE</color>
+    <color name="selected_icon_color">#193453</color>
+</resources>

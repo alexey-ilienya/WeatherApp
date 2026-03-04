@@ -6,4 +6,20 @@
     <string name="search_hint">Введите название</string>
     <string name="locations_title">Места</string>
     <string name="current_location">Текущее</string>
+
+    <string name="clear">Стереть</string>
+    <string name="text2">Пример 2</string>
+    <string name="save">Сохранить</string>
+
+    <string name="labelHorizontal">Горизонтальный календарь</string>
+    <string name="labelVertical">Вертикальный календарь</string>
+
+    <plurals name="days">
+        <item quantity="zero">Выберите даты</item>
+        <item quantity="one">день</item>
+        <item quantity="few">дня</item>
+        <item quantity="many">дней</item>
+        <item quantity="other">дней</item>
+    </plurals>
+
 </resources>
