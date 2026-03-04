@@ -299,7 +299,7 @@ private fun CalendarBottom(
     }
 }
 
-@Preview(heightDp = 800)
+@Preview
 @Composable
 private fun Example2Preview() {
     VerticalCalendarPage()

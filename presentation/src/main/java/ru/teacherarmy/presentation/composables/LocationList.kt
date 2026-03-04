@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -55,10 +56,43 @@ fun LocationsScreen(
     navController: NavHostController,
     searchCityViewModel: SearchCityViewModel
 ) {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val switchState by searchCityViewModel.switchState.collectAsState()
     val allCities by searchCityViewModel.allCities.collectAsState(emptyList())
     val selectedCity by searchCityViewModel.selectedCity.collectAsState()
+
+    LocationsScreenContent(
+        switchState = switchState,
+        allCities = allCities,
+        selectedCity = selectedCity,
+        navigateToHome = { navController.navigate(NavScreen.Home.route) },
+        navigateToSearch = { navController.navigate(NavScreen.Search.route) },
+        clearSelectedCity = {
+            searchCityViewModel.clearSelectedCity()
+            searchCityViewModel.toggleSwitchState(it)
+        },
+        selectCity = {
+            searchCityViewModel.setSelectedCity(it)
+        },
+        deleteCity = {
+            searchCityViewModel.deleteCity(it)
+        }
+    )
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LocationsScreenContent(
+    switchState: Boolean,
+    allCities: List<City>,
+    selectedCity: City?,
+    navigateToHome: () -> Unit = {},
+    navigateToSearch: () -> Unit = {},
+    clearSelectedCity: (Boolean) -> Unit = {},
+    selectCity: (City) -> Unit = {},
+    deleteCity: (City) -> Unit = {}
+) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
         modifier = Modifier
@@ -68,7 +102,7 @@ fun LocationsScreen(
             TopAppBar(
                 title = { Text(text = stringResource(R.string.locations_title)) },
                 navigationIcon = {
-                    IconButton(onClick = { navController.navigate(NavScreen.Home.route) }) {
+                    IconButton(onClick = { navigateToHome.invoke() }) {
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "back")
                     }
                 },
@@ -76,7 +110,7 @@ fun LocationsScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { navController.navigate(NavScreen.Search.route) }) {
+            FloatingActionButton(onClick = { navigateToSearch.invoke() }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "add new location")
             }
         }
@@ -88,17 +122,12 @@ fun LocationsScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(90.dp))
-            SwitchWithIcon(switchState, {
-                searchCityViewModel.clearSelectedCity()
-                searchCityViewModel.toggleSwitchState(it)
-            })
+            SwitchWithIcon(switchState, { clearSelectedCity.invoke(it) })
             LocationList(allCities = allCities,
                 selectedCity = selectedCity,
-                {
-                    searchCityViewModel.setSelectedCity(it)
-                }, {
-                    searchCityViewModel.deleteCity(it)
-                })
+                { selectCity.invoke(it) },
+                { deleteCity.invoke(it) }
+            )
             Divider(
                 modifier = Modifier
                     .padding(20.dp)
@@ -175,4 +204,14 @@ fun SwitchWithIcon(value: Boolean, onSwitchAction: (Boolean) -> Unit) {
         Text(text = stringResource(R.string.current_location), fontSize = 20.sp)
         Switch(checked = value, onCheckedChange = null)
     }
+}
+
+@Preview
+@Composable
+private fun LocationsScreenPreview() {
+    LocationsScreenContent(
+        switchState = true,
+        allCities = arrayListOf(City(1, "Место1", "", null, null), City(2, "Место2", "", null, null)),
+        selectedCity = City(1, "Место1", "", null, null)
+    )
 }
