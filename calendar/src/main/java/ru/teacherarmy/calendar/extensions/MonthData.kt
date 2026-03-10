@@ -29,12 +29,13 @@ data class MonthData internal constructor(
 
     private fun getDay(dayOffset: Int): CalendarDay {
         val date = firstDay.plusDays(dayOffset.toLong())
-        val position = when (date.yearMonth) {
-            month -> DayPosition.MonthDate
-            previousMonth -> DayPosition.InDate
-            nextMonth -> DayPosition.OutDate
-            else -> throw IllegalArgumentException("Invalid date: $date in month: $month")
-        }
+        val position =
+            when (date.yearMonth) {
+                month -> DayPosition.MonthDate
+                previousMonth -> DayPosition.InDate
+                nextMonth -> DayPosition.OutDate
+                else -> throw IllegalArgumentException("Invalid date: $date in month: $month")
+            }
         return CalendarDay(date, position)
     }
 }
@@ -48,16 +49,18 @@ fun getCalendarMonthData(
     val month = startMonth.plusMonths(offset.toLong())
     val firstDay = month.atStartOfMonth()
     val inDays = firstDayOfWeek.daysUntil(firstDay.dayOfWeek)
-    val outDays = (inDays + month.lengthOfMonth()).let { inAndMonthDays ->
-        val endOfRowDays = if (inAndMonthDays % 7 != 0) 7 - (inAndMonthDays % 7) else 0
-        val endOfGridDays = if (outDateStyle == OutDateStyle.EndOfRow) {
-            0
-        } else {
-            val weeksInMonth = (inAndMonthDays + endOfRowDays) / 7
-            (6 - weeksInMonth) * 7
+    val outDays =
+        (inDays + month.lengthOfMonth()).let { inAndMonthDays ->
+            val endOfRowDays = if (inAndMonthDays % 7 != 0) 7 - (inAndMonthDays % 7) else 0
+            val endOfGridDays =
+                if (outDateStyle == OutDateStyle.EndOfRow) {
+                    0
+                } else {
+                    val weeksInMonth = (inAndMonthDays + endOfRowDays) / 7
+                    (6 - weeksInMonth) * 7
+                }
+            return@let endOfRowDays + endOfGridDays
         }
-        return@let endOfRowDays + endOfGridDays
-    }
     return MonthData(month, inDays, outDays)
 }
 
@@ -68,22 +71,25 @@ fun getHeatMapCalendarMonthData(
 ): MonthData {
     val month = startMonth.plusMonths(offset.toLong())
     val firstDay = month.atStartOfMonth()
-    val inDays = if (offset == 0) {
-        firstDayOfWeek.daysUntil(firstDay.dayOfWeek)
-    } else {
-        -firstDay.dayOfWeek.daysUntil(firstDayOfWeek)
-    }
-    val outDays = (inDays + month.lengthOfMonth()).let { inAndMonthDays ->
-        if (inAndMonthDays % 7 != 0) 7 - (inAndMonthDays % 7) else 0
-    }
+    val inDays =
+        if (offset == 0) {
+            firstDayOfWeek.daysUntil(firstDay.dayOfWeek)
+        } else {
+            -firstDay.dayOfWeek.daysUntil(firstDayOfWeek)
+        }
+    val outDays =
+        (inDays + month.lengthOfMonth()).let { inAndMonthDays ->
+            if (inAndMonthDays % 7 != 0) 7 - (inAndMonthDays % 7) else 0
+        }
     return MonthData(month, inDays, outDays)
 }
 
-fun getMonthIndex(startMonth: YearMonth, targetMonth: YearMonth): Int {
-    return ChronoUnit.MONTHS.between(startMonth, targetMonth).toInt()
-}
+fun getMonthIndex(
+    startMonth: YearMonth,
+    targetMonth: YearMonth,
+): Int = ChronoUnit.MONTHS.between(startMonth, targetMonth).toInt()
 
-fun getMonthIndicesCount(startMonth: YearMonth, endMonth: YearMonth): Int {
-    // Add one to include the start month itself!
-    return getMonthIndex(startMonth, endMonth) + 1
-}
+fun getMonthIndicesCount(
+    startMonth: YearMonth,
+    endMonth: YearMonth,
+): Int = getMonthIndex(startMonth, endMonth) + 1

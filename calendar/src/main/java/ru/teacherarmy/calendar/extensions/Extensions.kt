@@ -3,7 +3,6 @@ package ru.teacherarmy.calendar.extensions
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.animateScrollBy
@@ -15,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -28,7 +28,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.semantics.Role
-import androidx.compose.material3.IconButton
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
@@ -36,7 +35,6 @@ import ru.teacherarmy.calendar.composables.CalendarLayoutInfo
 import ru.teacherarmy.calendar.composables.CalendarState
 import ru.teacherarmy.calendar.model.CalendarDay
 import ru.teacherarmy.calendar.model.CalendarMonth
-import ru.teacherarmy.calendar.model.CalendarYear
 import ru.teacherarmy.calendar.model.DayPosition
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -81,18 +79,22 @@ public fun DayOfWeek.daysUntil(other: DayOfWeek): Int = (7 + (other.ordinal - or
 
 // Find the actual month on the calendar where this date is shown.
 public val CalendarDay.positionYearMonth: YearMonth
-    get() = when (position) {
-        DayPosition.InDate -> date.yearMonth.nextMonth
-        DayPosition.MonthDate -> date.yearMonth
-        DayPosition.OutDate -> date.yearMonth.previousMonth
-    }
+    get() =
+        when (position) {
+            DayPosition.InDate -> date.yearMonth.nextMonth
+            DayPosition.MonthDate -> date.yearMonth
+            DayPosition.OutDate -> date.yearMonth.previousMonth
+        }
 
 public inline fun <T> Iterable<T>.indexOfFirstOrNull(predicate: (T) -> Boolean): Int? {
     val result = indexOfFirst(predicate)
     return if (result == -1) null else result
 }
 
-public fun <T : Comparable<T>> checkRange(start: T, end: T) {
+public fun <T : Comparable<T>> checkRange(
+    start: T,
+    end: T,
+) {
     check(end >= start) {
         "start: $start is greater than end: $end"
     }
@@ -115,32 +117,34 @@ fun Modifier.clickable(
     onClickLabel: String? = null,
     role: Role? = null,
     onClick: () -> Unit,
-): Modifier = composed {
-    clickable(
-        interactionSource = remember { MutableInteractionSource() },
-        indication = if (showRipple) LocalIndication.current else null,
-        enabled = enabled,
-        onClickLabel = onClickLabel,
-        role = role,
-        onClick = onClick,
-    )
-}
+): Modifier =
+    composed {
+        clickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication = if (showRipple) LocalIndication.current else null,
+            enabled = enabled,
+            onClickLabel = onClickLabel,
+            role = role,
+            onClick = onClick,
+        )
+    }
 
 @Composable
-fun StatusBarColorUpdateEffect(color: Color) {
+fun statusBarColorUpdateEffect(color: Color) {
     if (LocalInspectionMode.current) return // findActivity() will not work in preview.
     val activity = LocalContext.current.findActivity()
     val lifecycleOwner = LocalLifecycleOwner.current
-    val observer = remember {
-        StatusBarColorLifecycleObserver(activity, color.toArgb())
-    }
+    val observer =
+        remember {
+            StatusBarColorLifecycleObserver(activity, color.toArgb())
+        }
     LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.lifecycle.addObserver(observer)
     }
 }
 
 @Composable
-fun NavigationIcon(onBackClick: () -> Unit) {
+fun navigationIcon(onBackClick: () -> Unit) {
     IconButton(onClick = onBackClick) {
         Icon(
             tint = Color.White,
@@ -225,20 +229,20 @@ private val CalendarLayoutInfo.completelyVisibleMonths: List<CalendarMonth>
         }
     }
 
-private fun CalendarLayoutInfo.firstMostVisibleMonth(viewportPercent: Float = 50f): CalendarMonth? {
-    return if (visibleMonthsInfo.isEmpty()) {
+private fun CalendarLayoutInfo.firstMostVisibleMonth(viewportPercent: Float = 50f): CalendarMonth? =
+    if (visibleMonthsInfo.isEmpty()) {
         null
     } else {
         val viewportSize = (viewportEndOffset + viewportStartOffset) * viewportPercent / 100f
-        visibleMonthsInfo.firstOrNull { itemInfo ->
-            if (itemInfo.offset < 0) {
-                itemInfo.offset + itemInfo.size >= viewportSize
-            } else {
-                itemInfo.size - itemInfo.offset >= viewportSize
-            }
-        }?.month
+        visibleMonthsInfo
+            .firstOrNull { itemInfo ->
+                if (itemInfo.offset < 0) {
+                    itemInfo.offset + itemInfo.size >= viewportSize
+                } else {
+                    itemInfo.size - itemInfo.offset >= viewportSize
+                }
+            }?.month
     }
-}
 
 suspend fun LazyListState.animateScrollAndCenterItem(index: Int) {
     suspend fun animateScrollIfVisible(): Boolean {
@@ -263,16 +267,17 @@ suspend fun LazyListState.animateScrollAndCenterItem(index: Int) {
     }
 }
 
-fun YearMonth.displayText(short: Boolean = false): String {
-    return "${this.month.displayText(short = short)} ${this.year}"
-}
+fun YearMonth.displayText(short: Boolean = false): String = "${this.month.displayText(short = short)} ${this.year}"
 
 fun Month.displayText(short: Boolean = true): String {
     val style = if (short) TextStyle.SHORT else TextStyle.FULL
     return getDisplayName(style, Locale.ENGLISH)
 }
 
-fun DayOfWeek.displayText(uppercase: Boolean = false, narrow: Boolean = false): String {
+fun DayOfWeek.displayText(
+    uppercase: Boolean = false,
+    narrow: Boolean = false,
+): String {
     val style = if (narrow) TextStyle.NARROW else TextStyle.SHORT
     return getDisplayName(style, Locale.ENGLISH).let { value ->
         if (uppercase) value.uppercase(Locale.ENGLISH) else value

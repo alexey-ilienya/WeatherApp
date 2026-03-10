@@ -1,4 +1,4 @@
-package ru.teacherarmy.homework1.data.di
+package ru.teacherarmy.data.di
 
 import android.app.Application
 import android.content.Context
@@ -23,36 +23,41 @@ import javax.inject.Singleton
 object DataModule {
     @Provides
     @Singleton
-    fun WeatherApiService(): WeatherApi {
-        return Retrofit.Builder().baseUrl("https://api.openweathermap.org/data/2.5/")
-            .addConverterFactory(GsonConverterFactory.create()).build().create(WeatherApi::class.java)
-
-    }
-    @Provides
-    @Singleton
-    fun SearchApiService(): SearchApi {
-
-        return Retrofit.Builder().baseUrl("https://api.openweathermap.org/geo/1.0/direct/")
-            .addConverterFactory(GsonConverterFactory.create()).build().create(SearchApi::class.java)
-    }
+    fun weatherApiService(): WeatherApi =
+        Retrofit
+            .Builder()
+            .baseUrl("https://api.openweathermap.org/data/2.5/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(WeatherApi::class.java)
 
     @Provides
     @Singleton
-    fun provideFusedLocationClient(app:Application):FusedLocationProviderClient{
-        return LocationServices.getFusedLocationProviderClient(app)
-    }
+    fun searchApiService(): SearchApi =
+        Retrofit
+            .Builder()
+            .baseUrl("https://api.openweathermap.org/geo/1.0/direct/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(SearchApi::class.java)
 
     @Provides
     @Singleton
-    fun provideSearchDatabase(@ApplicationContext context: Context): CityDatabase {
-        return Room.databaseBuilder(context, CityDatabase::class.java, "app_database")
+    fun provideFusedLocationClient(app: Application): FusedLocationProviderClient =
+        LocationServices
+            .getFusedLocationProviderClient(app)
+
+    @Provides
+    @Singleton
+    fun provideSearchDatabase(
+        @ApplicationContext context: Context,
+    ): CityDatabase =
+        Room
+            .databaseBuilder(context, CityDatabase::class.java, "app_database")
             .fallbackToDestructiveMigration()
             .build()
-    }
 
     @Provides
     @Singleton
-    fun provideCityDao(appDatabase: CityDatabase): CityDao {
-        return appDatabase.cityDao()
-    }
+    fun provideCityDao(appDatabase: CityDatabase): CityDao = appDatabase.cityDao()
 }

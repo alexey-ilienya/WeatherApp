@@ -47,7 +47,7 @@ import ru.teacherarmy.calendar.model.CalendarMonth
  * customisations are rendered.
  */
 @Composable
-public fun HorizontalCalendar(
+public fun horizontalCalendar(
     modifier: Modifier = Modifier,
     state: CalendarState = rememberCalendarState(),
     calendarScrollPaged: Boolean = true,
@@ -60,21 +60,22 @@ public fun HorizontalCalendar(
     monthBody: (@Composable ColumnScope.(CalendarMonth, content: @Composable () -> Unit) -> Unit)? = null,
     monthFooter: (@Composable ColumnScope.(CalendarMonth) -> Unit)? = null,
     monthContainer: (@Composable LazyItemScope.(CalendarMonth, container: @Composable () -> Unit) -> Unit)? = null,
-): Unit = Calendar(
-    modifier = modifier,
-    state = state,
-    calendarScrollPaged = calendarScrollPaged,
-    userScrollEnabled = userScrollEnabled,
-    isHorizontal = true,
-    reverseLayout = reverseLayout,
-    contentHeightMode = contentHeightMode,
-    dayContent = dayContent,
-    monthHeader = monthHeader,
-    monthBody = monthBody,
-    monthFooter = monthFooter,
-    monthContainer = monthContainer,
-    contentPadding = contentPadding,
-)
+): Unit =
+    calendar(
+        modifier = modifier,
+        state = state,
+        calendarScrollPaged = calendarScrollPaged,
+        userScrollEnabled = userScrollEnabled,
+        isHorizontal = true,
+        reverseLayout = reverseLayout,
+        contentHeightMode = contentHeightMode,
+        dayContent = dayContent,
+        monthHeader = monthHeader,
+        monthBody = monthBody,
+        monthFooter = monthFooter,
+        monthContainer = monthContainer,
+        contentPadding = contentPadding,
+    )
 
 /**
  * A vertically scrolling month calendar.
@@ -110,7 +111,7 @@ public fun HorizontalCalendar(
  * customisations are rendered.
  */
 @Composable
-public fun VerticalCalendar(
+public fun verticalCalendar(
     modifier: Modifier = Modifier,
     state: CalendarState = rememberCalendarState(),
     calendarScrollPaged: Boolean = false,
@@ -123,24 +124,25 @@ public fun VerticalCalendar(
     monthBody: (@Composable ColumnScope.(CalendarMonth, content: @Composable () -> Unit) -> Unit)? = null,
     monthFooter: (@Composable ColumnScope.(CalendarMonth) -> Unit)? = null,
     monthContainer: (@Composable LazyItemScope.(CalendarMonth, container: @Composable () -> Unit) -> Unit)? = null,
-): Unit = Calendar(
-    modifier = modifier,
-    state = state,
-    calendarScrollPaged = calendarScrollPaged,
-    userScrollEnabled = userScrollEnabled,
-    isHorizontal = false,
-    reverseLayout = reverseLayout,
-    contentHeightMode = contentHeightMode,
-    dayContent = dayContent,
-    monthHeader = monthHeader,
-    monthBody = monthBody,
-    monthFooter = monthFooter,
-    monthContainer = monthContainer,
-    contentPadding = contentPadding,
-)
+): Unit =
+    calendar(
+        modifier = modifier,
+        state = state,
+        calendarScrollPaged = calendarScrollPaged,
+        userScrollEnabled = userScrollEnabled,
+        isHorizontal = false,
+        reverseLayout = reverseLayout,
+        contentHeightMode = contentHeightMode,
+        dayContent = dayContent,
+        monthHeader = monthHeader,
+        monthBody = monthBody,
+        monthFooter = monthFooter,
+        monthContainer = monthContainer,
+        contentPadding = contentPadding,
+    )
 
 @Composable
-private fun Calendar(
+private fun calendar(
     modifier: Modifier,
     state: CalendarState,
     calendarScrollPaged: Boolean,

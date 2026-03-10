@@ -31,32 +31,36 @@ import ru.teacherarmy.presentation.states.HourlyWeatherState
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun HourlyWeather(
+fun hourlyWeather(
     state: HourlyWeatherState,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     state.data?.let {
         val formatter = DateTimeFormatter.ofPattern("EEEE, d MMM", getCurrentLocale())
-        val today = remember(it) {
-            it[0].time.format(formatter).uppercase()
-        }
+        val today =
+            remember(it) {
+                it[0].time.format(formatter).uppercase()
+            }
 
         Card(
-            modifier = modifier
-                .padding(14.dp)
-                .fillMaxWidth()
-                .height(400.dp),
+            modifier =
+                modifier
+                    .padding(14.dp)
+                    .fillMaxWidth()
+                    .height(400.dp),
             shape = RoundedCornerShape(20.dp),
-            elevation = CardDefaults.outlinedCardElevation(10.dp)
+            elevation = CardDefaults.outlinedCardElevation(10.dp),
         ) {
-
             Text(
-                text = today, fontSize = 20.sp, fontStyle = FontStyle.Normal,
-                fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(14.dp),
+                text = today,
+                fontSize = 20.sp,
+                fontStyle = FontStyle.Normal,
+                fontWeight = FontWeight.ExtraBold,
+                modifier = Modifier.padding(14.dp),
             )
             LazyColumn {
                 items(it) { hourlyWeather ->
-                    HourlyWeatherItem(hourlyWeather)
+                    hourlyWeatherItem(hourlyWeather)
                 }
             }
         }
@@ -64,23 +68,27 @@ fun HourlyWeather(
 }
 
 @Composable
-fun HourlyWeatherItem(hourlyWeather: Hourly) {
+fun hourlyWeatherItem(hourlyWeather: Hourly) {
     val dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
-    Row(modifier = Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
-
+    Row(
+        modifier = Modifier.padding(14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         Text(
             text = hourlyWeather.time.format(dateTimeFormatter),
-            fontSize = 15.sp, fontStyle = FontStyle.Normal,
-            fontWeight = FontWeight.Light, modifier = Modifier.padding(15.dp)
+            fontSize = 15.sp,
+            fontStyle = FontStyle.Normal,
+            fontWeight = FontWeight.Light,
+            modifier = Modifier.padding(15.dp),
         )
-
 
         Spacer(modifier = Modifier.width(50.dp))
 
         Image(
             painter = painterResource(id = hourlyWeather.weatherType.getDrawableResId()),
-            contentDescription = null, modifier = Modifier.size(50.dp)
+            contentDescription = null,
+            modifier = Modifier.size(50.dp),
         )
 
         Spacer(modifier = Modifier.width(50.dp))
@@ -88,6 +96,5 @@ fun HourlyWeatherItem(hourlyWeather: Hourly) {
 
         Spacer(modifier = Modifier.width(40.dp))
         Text(text = " ${stringResource(R.string.format_wind_speed, hourlyWeather.windspeed_120m)}")
-
     }
 }

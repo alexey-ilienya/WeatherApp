@@ -32,7 +32,7 @@ import ru.teacherarmy.calendar.extensions.displayText
 import java.time.YearMonth
 
 @Composable
-fun SimpleCalendarTitle(
+fun simpleCalendarTitle(
     modifier: Modifier,
     currentMonth: YearMonth,
     isHorizontal: Boolean = true,
@@ -43,22 +43,23 @@ fun SimpleCalendarTitle(
         modifier = modifier.height(40.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        CalendarNavigationIcon(
+        calendarNavigationIcon(
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
             contentDescription = "Previous",
             onClick = goToPrevious,
             isHorizontal = isHorizontal,
         )
         Text(
-            modifier = Modifier
-                .weight(1f)
-                .testTag("MonthTitle"),
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .testTag("MonthTitle"),
             text = currentMonth.displayText(),
             fontSize = 22.sp,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Medium,
         )
-        CalendarNavigationIcon(
+        calendarNavigationIcon(
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
             contentDescription = "Next",
             onClick = goToNext,
@@ -68,28 +69,30 @@ fun SimpleCalendarTitle(
 }
 
 @Composable
-private fun CalendarNavigationIcon(
+private fun calendarNavigationIcon(
     imageVector: ImageVector,
     contentDescription: String,
     isHorizontal: Boolean = true,
     onClick: () -> Unit,
 ) = Box(
-    modifier = Modifier
-        .fillMaxHeight()
-        .aspectRatio(1f)
-        .clip(shape = CircleShape)
-        .clickable(role = Role.Button, onClick = onClick),
+    modifier =
+        Modifier
+            .fillMaxHeight()
+            .aspectRatio(1f)
+            .clip(shape = CircleShape)
+            .clickable(role = Role.Button, onClick = onClick),
 ) {
     val rotation by animateFloatAsState(
         targetValue = if (isHorizontal) 0f else 90f,
         label = "CalendarNavigationIconAnimation",
     )
     Icon(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(4.dp)
-            .align(Alignment.Center)
-            .rotate(rotation),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(4.dp)
+                .align(Alignment.Center)
+                .rotate(rotation),
         imageVector = imageVector,
         contentDescription = contentDescription,
     )

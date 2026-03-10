@@ -10,5 +10,5 @@ data class HourlyForecast(
     val wind: WindInfo,
     val visibility: Int,
     @SerializedName("dt_txt")
-    val dtTxt: String
+    val dtTxt: String,
 )

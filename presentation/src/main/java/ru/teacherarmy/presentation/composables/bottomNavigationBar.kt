@@ -16,40 +16,33 @@ import ru.teacherarmy.presentation.R
 import ru.teacherarmy.presentation.navigation.BottomNavItem
 
 @Composable
-fun BottomNavigationBar(navController: NavHostController) {
+fun bottomNavigationBar(navController: NavHostController) {
     NavigationBar(
-        containerColor = colorResource(R.color.nav_container_color)
+        containerColor = colorResource(R.color.nav_container_color),
     ) {
-
         val navBackStackEntry by navController.currentBackStackEntryAsState()
 
         val currentRoute = navBackStackEntry?.destination?.route
 
         BottomNavItem.entries.forEach { navItem ->
-
             NavigationBarItem(
-
                 selected = currentRoute == navItem.route,
-
                 onClick = {
                     navController.navigate(navItem.route)
                 },
-
                 icon = {
                     Icon(imageVector = navItem.icon, contentDescription = navItem.contentDescription)
                 },
-
                 label = {
                     Text(text = stringResource(navItem.labelResourceId))
                 },
-                //alwaysShowLabel = false,
-
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = colorResource(R.color.selected_icon_color), // Icon color when selected
-                    unselectedIconColor = Color.White, // Icon color when not selected
-                    selectedTextColor = Color.White, // Label color when selected
-                    indicatorColor = colorResource(R.color.nav_container_color) // Highlight color for selected item
-                )
+                colors =
+                    NavigationBarItemDefaults.colors(
+                        selectedIconColor = colorResource(R.color.selected_icon_color), // Icon color when selected
+                        unselectedIconColor = Color.White, // Icon color when not selected
+                        selectedTextColor = Color.White, // Label color when selected
+                        indicatorColor = colorResource(R.color.nav_container_color), // Highlight color for selected item
+                    ),
             )
         }
     }

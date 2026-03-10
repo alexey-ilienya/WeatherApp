@@ -8,14 +8,20 @@ import ru.teacherarmy.domain.usecase.results.Result
 import java.time.DayOfWeek
 import javax.inject.Inject
 
-class GetDailyWeatherUseCase @Inject constructor(
-    private val weatherRepo: WeatherRepository
-) {
-    operator fun invoke(lat:Double, lon:Double) :Flow<Result<Map<DayOfWeek, List<Daily>>>> = flow{
-        try {
-            emit(Result.Success(weatherRepo.getDailyWeather(lat , lon)))
-        }catch (e:Exception){
-            emit(Result.Error(e.message))
-        }
+class GetDailyWeatherUseCase
+    @Inject
+    constructor(
+        private val weatherRepo: WeatherRepository,
+    ) {
+        operator fun invoke(
+            lat: Double,
+            lon: Double,
+        ): Flow<Result<Map<DayOfWeek, List<Daily>>>> =
+            flow {
+                try {
+                    emit(Result.Success(weatherRepo.getDailyWeather(lat, lon)))
+                } catch (e: Exception) {
+                    emit(Result.Error(e.message))
+                }
+            }
     }
-}

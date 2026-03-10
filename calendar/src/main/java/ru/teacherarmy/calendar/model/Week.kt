@@ -4,7 +4,9 @@ import androidx.compose.runtime.Immutable
 import java.io.Serializable
 
 @Immutable
-data class Week(val days: List<WeekDay>) : Serializable {
+data class Week(
+    val days: List<WeekDay>,
+) : Serializable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -23,10 +25,9 @@ data class Week(val days: List<WeekDay>) : Serializable {
         return result
     }
 
-    override fun toString(): String {
-        return "Week { " +
-                "first = ${days.first()}, " +
-                "last = ${days.last()} " +
-                "} "
-    }
+    override fun toString(): String =
+        "Week { " +
+            "first = ${days.first()}, " +
+            "last = ${days.last()} " +
+            "} "
 }

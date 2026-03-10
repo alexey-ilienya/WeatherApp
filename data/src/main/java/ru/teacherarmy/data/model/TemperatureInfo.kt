@@ -6,5 +6,5 @@ data class TemperatureInfo(
     val eve: Double,
     val morn: Double,
     val min: Double,
-    val max: Double
+    val max: Double,
 )

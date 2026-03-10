@@ -9,12 +9,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import ru.teacherarmy.presentation.navigation.AppNavigation
-import ru.teacherarmy.homework1.ui.theme.WeatherAppTheme
-import ru.teacherarmy.presentation.composables.BottomNavigationBar
+import ru.teacherarmy.homework1.ui.theme.weatherAppTheme
+import ru.teacherarmy.presentation.composables.bottomNavigationBar
+import ru.teacherarmy.presentation.navigation.appNavigation
 
 @AndroidEntryPoint
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -22,18 +21,19 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            WeatherAppTheme {
+            weatherAppTheme {
                 val navController = rememberNavController()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.background,
                 ) {
                     Scaffold(
                         bottomBar = {
-                            BottomNavigationBar(navController = navController)
-                        }, content = { _ ->
-                            AppNavigation(navController = navController)
-                        }
+                            bottomNavigationBar(navController = navController)
+                        },
+                        content = { _ ->
+                            appNavigation(navController = navController)
+                        },
                     )
                 }
             }

@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class NameInfo(
     @SerializedName("ru")
-    val name: String?
+    val name: String?,
 )

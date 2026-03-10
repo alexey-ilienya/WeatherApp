@@ -1,17 +1,15 @@
 package ru.teacherarmy.presentation.composables
 
-import ru.teacherarmy.calendar.extensions.atStartOfMonth
-import ru.teacherarmy.calendar.extensions.nextMonth
-import ru.teacherarmy.calendar.extensions.previousMonth
-import ru.teacherarmy.calendar.extensions.yearMonth
 import ru.teacherarmy.calendar.model.DateSelection
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 private val rangeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
-fun dateRangeDisplayText(startDate: LocalDate, endDate: LocalDate): String {
-    return "Selected: ${rangeFormatter.format(startDate)} - ${rangeFormatter.format(endDate)}"
-}
+
+fun dateRangeDisplayText(
+    startDate: LocalDate,
+    endDate: LocalDate,
+): String = "Selected: ${rangeFormatter.format(startDate)} - ${rangeFormatter.format(endDate)}"
 
 object ContinuousSelectionHelper {
     fun getSelection(

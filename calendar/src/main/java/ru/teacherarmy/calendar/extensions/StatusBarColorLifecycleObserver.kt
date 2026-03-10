@@ -8,7 +8,6 @@ import androidx.annotation.ColorInt
 import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import ru.teacherarmy.calendar.R
 import java.lang.ref.WeakReference
 
 @Suppress("DEPRECATION")

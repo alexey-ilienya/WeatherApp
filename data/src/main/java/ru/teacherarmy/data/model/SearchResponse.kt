@@ -7,5 +7,5 @@ data class SearchResponse(
     val nameInfo: NameInfo?,
     val lat: Double,
     val lon: Double,
-    val country: String
+    val country: String,
 )

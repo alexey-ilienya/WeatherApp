@@ -16,15 +16,14 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
-fun CurrentWeatherResponse.toDomainModel(): CurrentWeather {
-    return CurrentWeather(
+fun CurrentWeatherResponse.toDomainModel(): CurrentWeather =
+    CurrentWeather(
         if (dt >= sys.sunrise && dt <= sys.sunset) 1 else 0,
         main.temp - TEMP_0C,
         WeatherType.fromWMO(weather[0].id),
         wind.degrees.roundToInt(),
-        wind.speed
+        wind.speed,
     )
-}
 
 fun DailyForecastResponse.toDomainModel(): List<Daily> {
     val tz = city.timezone
@@ -35,7 +34,7 @@ fun DailyForecastResponse.toDomainModel(): List<Daily> {
             temperature_2m_min = it.temp.min - TEMP_0C,
             temperature_2m_max = it.temp.max - TEMP_0C,
             time = instant.atZone(ZoneOffset.UTC).toLocalDate(),
-            weatherType = WeatherType.fromWMO(it.weather[0].id)
+            weatherType = WeatherType.fromWMO(it.weather[0].id),
         )
     }
 }
@@ -52,9 +51,11 @@ fun HourlyForecastResponse.toDomainModel(): List<Hourly> {
                 temperature_2m = it.main.temp - TEMP_0C,
                 time = localDateTime,
                 windspeed_120m = it.wind.speed,
-                weatherType = WeatherType.fromWMO(it.weather[0].id)
+                weatherType = WeatherType.fromWMO(it.weather[0].id),
             )
-        } else null
+        } else {
+            null
+        }
     }
 }
 
@@ -69,12 +70,8 @@ fun mapDailyWeatherByDayOfWeek(dailyWeatherList: List<Daily>): Map<DayOfWeek, Li
     return dailyWeatherMap
 }
 
-fun City.toEntity(): CityEntity {
-    return CityEntity(id ?: 0, name, country, latitude, longitude)
-}
+fun City.toEntity(): CityEntity = CityEntity(id ?: 0, name, country, latitude, longitude)
 
-fun CityEntity.toDomainModel(): City {
-    return City(id, name, country, latitude, longitude)
-}
+fun CityEntity.toDomainModel(): City = City(id, name, country, latitude, longitude)
 
 const val TEMP_0C = 273.0

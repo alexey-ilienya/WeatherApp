@@ -39,73 +39,78 @@ internal fun LazyListScope.CalendarMonths(
         key = { offset -> monthData(offset).yearMonth },
     ) { offset ->
         val month = monthData(offset)
-        val fillHeight = when (contentHeightMode) {
-            ContentHeightMode.Wrap -> false
-            ContentHeightMode.Fill -> true
-        }
+        val fillHeight =
+            when (contentHeightMode) {
+                ContentHeightMode.Wrap -> false
+                ContentHeightMode.Fill -> true
+            }
         val hasMonthContainer = monthContainer != null
         val currentOnItemPlaced by rememberUpdatedState(onItemPlaced)
-        val itemCoordinatesStore = remember(month.yearMonth) {
-            ItemCoordinatesStore(currentOnItemPlaced)
-        }
+        val itemCoordinatesStore =
+            remember(month.yearMonth) {
+                ItemCoordinatesStore(currentOnItemPlaced)
+            }
         Box(Modifier.onPlaced(itemCoordinatesStore::onItemRootPlaced)) {
             monthContainer.or(defaultMonthContainer)(month) {
                 Column(
-                    modifier = Modifier
-                        .then(
-                            if (hasMonthContainer) {
-                                Modifier.fillMaxWidth()
-                            } else {
-                                Modifier.fillParentMaxWidth()
-                            },
-                        )
-                        .then(
-                            if (fillHeight) {
+                    modifier =
+                        Modifier
+                            .then(
                                 if (hasMonthContainer) {
-                                    Modifier.fillMaxHeight()
+                                    Modifier.fillMaxWidth()
                                 } else {
-                                    Modifier.fillParentMaxHeight()
-                                }
-                            } else {
-                                Modifier.wrapContentHeight()
-                            },
-                        ),
+                                    Modifier.fillParentMaxWidth()
+                                },
+                            ).then(
+                                if (fillHeight) {
+                                    if (hasMonthContainer) {
+                                        Modifier.fillMaxHeight()
+                                    } else {
+                                        Modifier.fillParentMaxHeight()
+                                    }
+                                } else {
+                                    Modifier.wrapContentHeight()
+                                },
+                            ),
                 ) {
                     monthHeader?.invoke(this, month)
                     monthBody.or(defaultMonthBody)(month) {
                         Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .then(
-                                    if (fillHeight) {
-                                        Modifier.weight(1f)
-                                    } else {
-                                        Modifier.wrapContentHeight()
-                                    },
-                                ),
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .then(
+                                        if (fillHeight) {
+                                            Modifier.weight(1f)
+                                        } else {
+                                            Modifier.wrapContentHeight()
+                                        },
+                                    ),
                         ) {
                             for ((row, week) in month.weekDays.withIndex()) {
                                 Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .then(
-                                            if (fillHeight) {
-                                                Modifier.weight(1f)
-                                            } else {
-                                                Modifier.wrapContentHeight()
-                                            },
-                                        ),
+                                    modifier =
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .then(
+                                                if (fillHeight) {
+                                                    Modifier.weight(1f)
+                                                } else {
+                                                    Modifier.wrapContentHeight()
+                                                },
+                                            ),
                                 ) {
                                     for ((column, day) in week.withIndex()) {
                                         Box(
-                                            modifier = Modifier
-                                                .weight(1f)
-                                                .clipToBounds()
-                                                .onFirstDayPlaced(
-                                                    dateRow = row,
-                                                    dateColumn = column,
-                                                    onFirstDayPlaced = itemCoordinatesStore::onFirstDayPlaced,
-                                                ),
+                                            modifier =
+                                                Modifier
+                                                    .weight(1f)
+                                                    .clipToBounds()
+                                                    .onFirstDayPlaced(
+                                                        dateRow = row,
+                                                        dateColumn = column,
+                                                        onFirstDayPlaced = itemCoordinatesStore::onFirstDayPlaced,
+                                                    ),
                                         ) {
                                             dayContent(day)
                                         }
@@ -141,10 +146,11 @@ internal class ItemCoordinatesStore(
     private fun check() {
         val itemRootCoordinates = itemRootCoordinates ?: return
         val firstDayCoordinates = firstDayCoordinates ?: return
-        val itemCoordinates = ItemCoordinates(
-            itemRootCoordinates = itemRootCoordinates,
-            firstDayCoordinates = firstDayCoordinates,
-        )
+        val itemCoordinates =
+            ItemCoordinates(
+                itemRootCoordinates = itemRootCoordinates,
+                firstDayCoordinates = firstDayCoordinates,
+            )
         onItemPlaced(itemCoordinates)
     }
 }

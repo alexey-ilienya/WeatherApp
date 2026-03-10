@@ -4,15 +4,18 @@ import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListLayoutInfo
 import ru.teacherarmy.calendar.model.CalendarMonth
 
-class CalendarLayoutInfo(info: LazyListLayoutInfo, private val month: (Int) -> CalendarMonth) :
-    LazyListLayoutInfo by info {
+class CalendarLayoutInfo(
+    info: LazyListLayoutInfo,
+    private val month: (Int) -> CalendarMonth,
+) : LazyListLayoutInfo by info {
     /**
      * The list of [CalendarItemInfo] representing all the currently visible months.
      */
     val visibleMonthsInfo: List<CalendarItemInfo>
-        get() = visibleItemsInfo.map {
-            CalendarItemInfo(it, month(it.index))
-        }
+        get() =
+            visibleItemsInfo.map {
+                CalendarItemInfo(it, month(it.index))
+            }
 }
 
 /**
@@ -23,4 +26,7 @@ class CalendarLayoutInfo(info: LazyListLayoutInfo, private val month: (Int) -> C
  * @see CalendarLayoutInfo
  * @see LazyListItemInfo
  */
-class CalendarItemInfo(info: LazyListItemInfo, val month: CalendarMonth) : LazyListItemInfo by info
+class CalendarItemInfo(
+    info: LazyListItemInfo,
+    val month: CalendarMonth,
+) : LazyListItemInfo by info

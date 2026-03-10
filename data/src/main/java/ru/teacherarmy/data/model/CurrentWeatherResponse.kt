@@ -10,11 +10,11 @@ data class CurrentWeatherResponse(
     val dt: Long,
     val sys: Sys,
     val timezone: Int,
-    val name: String
+    val name: String,
 )
 
 data class Sys(
     val country: String,
     val sunrise: Int,
-    val sunset: Int
+    val sunset: Int,
 )

@@ -14,22 +14,24 @@ fun getCalendarYearData(
     outDateStyle: OutDateStyle,
 ): CalendarYear {
     val year = startYear.plusYears(offset.toLong())
-    val months = List(Month.entries.size) { index ->
-        getCalendarMonthData(
-            startMonth = year.atMonth(Month.JANUARY),
-            offset = index,
-            firstDayOfWeek = firstDayOfWeek,
-            outDateStyle = outDateStyle,
-        ).calendarMonth
-    }
+    val months =
+        List(Month.entries.size) { index ->
+            getCalendarMonthData(
+                startMonth = year.atMonth(Month.JANUARY),
+                offset = index,
+                firstDayOfWeek = firstDayOfWeek,
+                outDateStyle = outDateStyle,
+            ).calendarMonth
+        }
     return CalendarYear(year, months)
 }
 
-fun getYearIndex(startYear: Year, targetYear: Year): Int {
-    return ChronoUnit.YEARS.between(startYear, targetYear).toInt()
-}
+fun getYearIndex(
+    startYear: Year,
+    targetYear: Year,
+): Int = ChronoUnit.YEARS.between(startYear, targetYear).toInt()
 
-fun getYearIndicesCount(startYear: Year, endYear: Year): Int {
-    // Add one to include the start year itself!
-    return getYearIndex(startYear, endYear) + 1
-}
+fun getYearIndicesCount(
+    startYear: Year,
+    endYear: Year,
+): Int = getYearIndex(startYear, endYear) + 1

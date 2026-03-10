@@ -52,15 +52,15 @@ import ru.teacherarmy.presentation.viewmodels.SearchCityViewModel
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LocationsScreen(
+fun locationsScreen(
     navController: NavHostController,
-    searchCityViewModel: SearchCityViewModel
+    searchCityViewModel: SearchCityViewModel,
 ) {
     val switchState by searchCityViewModel.switchState.collectAsState()
     val allCities by searchCityViewModel.allCities.collectAsState(emptyList())
     val selectedCity by searchCityViewModel.selectedCity.collectAsState()
 
-    LocationsScreenContent(
+    locationsScreenContent(
         switchState = switchState,
         allCities = allCities,
         selectedCity = selectedCity,
@@ -75,14 +75,14 @@ fun LocationsScreen(
         },
         deleteCity = {
             searchCityViewModel.deleteCity(it)
-        }
+        },
     )
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LocationsScreenContent(
+fun locationsScreenContent(
     switchState: Boolean,
     allCities: List<City>,
     selectedCity: City?,
@@ -90,14 +90,15 @@ fun LocationsScreenContent(
     navigateToSearch: () -> Unit = {},
     clearSelectedCity: (Boolean) -> Unit = {},
     selectCity: (City) -> Unit = {},
-    deleteCity: (City) -> Unit = {}
+    deleteCity: (City) -> Unit = {},
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
                 title = { Text(text = stringResource(R.string.locations_title)) },
@@ -106,36 +107,41 @@ fun LocationsScreenContent(
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "back")
                     }
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { navigateToSearch.invoke() }) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "add new location")
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "add new location",
+                )
             }
-        }
+        },
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(90.dp))
-            SwitchWithIcon(switchState, { clearSelectedCity.invoke(it) })
-            LocationList(allCities = allCities,
+            switchWithIcon(switchState, { clearSelectedCity.invoke(it) })
+            locationList(
+                allCities = allCities,
                 selectedCity = selectedCity,
                 { selectCity.invoke(it) },
-                { deleteCity.invoke(it) }
+                { deleteCity.invoke(it) },
             )
             Divider(
-                modifier = Modifier
-                    .padding(20.dp)
-                    .fillMaxWidth()
-                    .height(2.dp),
+                modifier =
+                    Modifier
+                        .padding(20.dp)
+                        .fillMaxWidth()
+                        .height(2.dp),
                 color = Color.LightGray,
             )
-
         }
     }
 }
@@ -143,75 +149,88 @@ fun LocationsScreenContent(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LocationList(
+fun locationList(
     allCities: List<City>,
     selectedCity: City?,
     setSelectedCityAction: (City) -> Unit,
     deleteCityAction: (City) -> Unit,
 ) {
     LazyColumn(
-        modifier = Modifier
-            .padding(top = 50.dp),
+        modifier = Modifier.padding(top = 50.dp),
         flingBehavior = ScrollableDefaults.flingBehavior(),
-        userScrollEnabled = true
-
+        userScrollEnabled = true,
     ) {
         items(allCities) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 RadioButton(
-                    selected = selectedCity == it, onClick = {
+                    selected = selectedCity == it,
+                    onClick = {
                         setSelectedCityAction(it)
-                    }, modifier =
-                        Modifier.padding(start = 19.dp)
+                    },
+                    modifier = Modifier.padding(start = 19.dp),
                 )
-                Text(text = it.name ?: "", fontSize = 19.sp)
+                Text(
+                    text = it.name ?: "",
+                    fontSize = 19.sp,
+                )
 
                 IconButton(onClick = { deleteCityAction(it) }) {
                     Icon(
                         imageVector = Icons.Default.Clear,
                         modifier = Modifier.padding(end = 15.dp),
-                        contentDescription = "deletecity"
+                        contentDescription = "deletecity",
                     )
                 }
             }
         }
-
-
     }
 }
 
 @Composable
-fun SwitchWithIcon(value: Boolean, onSwitchAction: (Boolean) -> Unit) {
+fun switchWithIcon(
+    value: Boolean,
+    onSwitchAction: (Boolean) -> Unit,
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-
-        modifier = Modifier
-            .clip(RoundedCornerShape(20.dp))
-            .background(color = Color.Blue)
-            .fillMaxWidth()
-            .padding(20.dp)
-            .toggleable(
-                value = value,
-                onValueChange = onSwitchAction,
-                role = Role.Switch,
-            )
+        modifier =
+            Modifier
+                .clip(RoundedCornerShape(20.dp))
+                .background(color = Color.Blue)
+                .fillMaxWidth()
+                .padding(20.dp)
+                .toggleable(
+                    value = value,
+                    onValueChange = onSwitchAction,
+                    role = Role.Switch,
+                ),
     ) {
-        Text(text = stringResource(R.string.current_location), fontSize = 20.sp)
-        Switch(checked = value, onCheckedChange = null)
+        Text(
+            text = stringResource(R.string.current_location),
+            fontSize = 20.sp,
+        )
+        Switch(
+            checked = value,
+            onCheckedChange = null,
+        )
     }
 }
 
 @Preview
 @Composable
-private fun LocationsScreenPreview() {
-    LocationsScreenContent(
+private fun locationsScreenPreview() {
+    locationsScreenContent(
         switchState = true,
-        allCities = arrayListOf(City(1, "Место1", "", null, null), City(2, "Место2", "", null, null)),
-        selectedCity = City(1, "Место1", "", null, null)
+        allCities =
+            arrayListOf(
+                City(1, "Место1", "", null, null),
+                City(2, "Место2", "", null, null),
+            ),
+        selectedCity = City(1, "Место1", "", null, null),
     )
 }

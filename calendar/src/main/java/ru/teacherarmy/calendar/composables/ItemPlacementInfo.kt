@@ -1,10 +1,10 @@
 package ru.teacherarmy.calendar.composables
 
 import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.withFrameNanos
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.unit.round
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.isActive
@@ -36,17 +36,17 @@ internal class ItemPlacementInfo {
         val daySize = firstDayCoordinates.size
         val dayOffset = itemRootCoordinates.localPositionOf(firstDayCoordinates).round()
         return when (orientation) {
-            Orientation.Vertical -> OffsetSize(
-                offset = dayOffset.y,
-                size = daySize.height,
-            )
+            Orientation.Vertical ->
+                OffsetSize(
+                    offset = dayOffset.y,
+                    size = daySize.height,
+                )
 
-            Orientation.Horizontal -> {
+            Orientation.Horizontal ->
                 OffsetSize(
                     offset = dayOffset.x,
                     size = daySize.width,
                 )
-            }
         }
     }
 

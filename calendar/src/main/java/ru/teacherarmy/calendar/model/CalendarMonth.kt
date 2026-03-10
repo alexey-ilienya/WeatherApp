@@ -29,11 +29,10 @@ data class CalendarMonth(
         return result
     }
 
-    override fun toString(): String {
-        return "CalendarMonth { " +
-                "yearMonth = $yearMonth, " +
-                "firstDay = ${weekDays.first().first()}, " +
-                "lastDay = ${weekDays.last().last()} " +
-                "} "
-    }
+    override fun toString(): String =
+        "CalendarMonth { " +
+            "yearMonth = $yearMonth, " +
+            "firstDay = ${weekDays.first().first()}, " +
+            "lastDay = ${weekDays.last().last()} " +
+            "} "
 }

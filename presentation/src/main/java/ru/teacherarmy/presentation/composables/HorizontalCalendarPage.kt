@@ -31,41 +31,46 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
-import ru.teacherarmy.calendar.model.CalendarDay
-import ru.teacherarmy.calendar.model.DayPosition
-import ru.teacherarmy.calendar.composables.HorizontalCalendar
 import ru.teacherarmy.calendar.composables.LocalScaffoldPaddingValues
-import ru.teacherarmy.calendar.composables.SimpleCalendarTitle
+import ru.teacherarmy.calendar.composables.horizontalCalendar
 import ru.teacherarmy.calendar.composables.rememberCalendarState
+import ru.teacherarmy.calendar.composables.simpleCalendarTitle
 import ru.teacherarmy.calendar.extensions.clickable
 import ru.teacherarmy.calendar.extensions.daysOfWeek
 import ru.teacherarmy.calendar.extensions.displayText
 import ru.teacherarmy.calendar.extensions.nextMonth
 import ru.teacherarmy.calendar.extensions.previousMonth
 import ru.teacherarmy.calendar.extensions.rememberFirstMostVisibleMonth
+import ru.teacherarmy.calendar.model.CalendarDay
+import ru.teacherarmy.calendar.model.DayPosition
 import ru.teacherarmy.presentation.R
 import java.time.DayOfWeek
 import java.time.YearMonth
 
 @Composable
-fun HorizontalCalendarPage(adjacentMonths: Long = 500, close: () -> Unit = {}) {
+fun horizontalCalendarPage(
+    adjacentMonths: Long = 500,
+    close: () -> Unit = {},
+) {
     val currentMonth = remember { YearMonth.now() }
     val startMonth = remember { currentMonth.minusMonths(adjacentMonths) }
     val endMonth = remember { currentMonth.plusMonths(adjacentMonths) }
     val selections = remember { mutableStateListOf<CalendarDay>() }
     val daysOfWeek = remember { daysOfWeek() }
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(LocalScaffoldPaddingValues.current),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(LocalScaffoldPaddingValues.current),
     ) {
-        val state = rememberCalendarState(
-            startMonth = startMonth,
-            endMonth = endMonth,
-            firstVisibleMonth = currentMonth,
-            firstDayOfWeek = daysOfWeek.first(),
-        )
+        val state =
+            rememberCalendarState(
+                startMonth = startMonth,
+                endMonth = endMonth,
+                firstVisibleMonth = currentMonth,
+                firstDayOfWeek = daysOfWeek.first(),
+            )
         val coroutineScope = rememberCoroutineScope()
         val visibleMonth = rememberFirstMostVisibleMonth(state, viewportPercent = 90f)
         Row(
@@ -73,20 +78,20 @@ fun HorizontalCalendarPage(adjacentMonths: Long = 500, close: () -> Unit = {}) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .aspectRatio(1f)
-                    .clip(CircleShape)
-                    .clickable(
-                        enabled = true,
-                        showRipple = true,
-                        onClick = close
-                    )
-                    .padding(12.dp),
+                modifier =
+                    Modifier
+                        .fillMaxHeight()
+                        .aspectRatio(1f)
+                        .clip(CircleShape)
+                        .clickable(
+                            enabled = true,
+                            showRipple = true,
+                            onClick = close,
+                        ).padding(12.dp),
                 painter = painterResource(id = R.drawable.ic_close),
                 contentDescription = "Close",
             )
-            SimpleCalendarTitle(
+            simpleCalendarTitle(
                 modifier = Modifier.padding(vertical = 10.dp, horizontal = 8.dp),
                 currentMonth = visibleMonth.yearMonth,
                 goToPrevious = {
@@ -101,11 +106,11 @@ fun HorizontalCalendarPage(adjacentMonths: Long = 500, close: () -> Unit = {}) {
                 },
             )
         }
-        HorizontalCalendar(
+        horizontalCalendar(
             modifier = Modifier.testTag("Calendar"),
             state = state,
             dayContent = { day ->
-                Day(day, isSelected = selections.contains(day)) { clicked ->
+                day(day, isSelected = selections.contains(day)) { clicked ->
                     if (selections.contains(clicked)) {
                         selections.remove(clicked)
                     } else {
@@ -114,18 +119,19 @@ fun HorizontalCalendarPage(adjacentMonths: Long = 500, close: () -> Unit = {}) {
                 }
             },
             monthHeader = {
-                MonthHeader(daysOfWeek = daysOfWeek)
+                monthHeader(daysOfWeek = daysOfWeek)
             },
         )
     }
 }
 
 @Composable
-private fun MonthHeader(daysOfWeek: List<DayOfWeek>) {
+private fun monthHeader(daysOfWeek: List<DayOfWeek>) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .testTag("MonthHeader"),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .testTag("MonthHeader"),
     ) {
         for (dayOfWeek in daysOfWeek) {
             Text(
@@ -140,27 +146,31 @@ private fun MonthHeader(daysOfWeek: List<DayOfWeek>) {
 }
 
 @Composable
-private fun Day(day: CalendarDay, isSelected: Boolean, onClick: (CalendarDay) -> Unit) {
+private fun day(
+    day: CalendarDay,
+    isSelected: Boolean,
+    onClick: (CalendarDay) -> Unit,
+) {
     Box(
-        modifier = Modifier
-            .aspectRatio(1f) // This is important for square-sizing!
-            .testTag("MonthDay")
-            .padding(6.dp)
-            .clip(CircleShape)
-            .background(color = if (isSelected) colorResource(R.color.example_1_selection_color) else Color.Transparent)
-            // Disable clicks on inDates/outDates
-            .clickable(
-                enabled = day.position == DayPosition.MonthDate,
-                showRipple = !isSelected,
-                onClick = { onClick(day) },
-            ),
+        modifier =
+            Modifier
+                .aspectRatio(1f) // This is important for square-sizing!
+                .testTag("MonthDay")
+                .padding(6.dp)
+                .clip(CircleShape)
+                .background(color = if (isSelected) colorResource(R.color.example_1_selection_color) else Color.Transparent)
+                .clickable(
+                    enabled = day.position == DayPosition.MonthDate,
+                    showRipple = !isSelected,
+                    onClick = { onClick(day) },
+                ),
         contentAlignment = Alignment.Center,
     ) {
-        val textColor = when (day.position) {
-            // Color.Unspecified will use the default text color from the current theme
-            DayPosition.MonthDate -> if (isSelected) Color.White else Color.Unspecified
-            DayPosition.InDate, DayPosition.OutDate -> colorResource(R.color.inactive_text_color)
-        }
+        val textColor =
+            when (day.position) {
+                DayPosition.MonthDate -> if (isSelected) Color.White else Color.Unspecified
+                DayPosition.InDate, DayPosition.OutDate -> colorResource(R.color.inactive_text_color)
+            }
         Text(
             text = day.date.dayOfMonth.toString(),
             color = textColor,
@@ -171,6 +181,6 @@ private fun Day(day: CalendarDay, isSelected: Boolean, onClick: (CalendarDay) ->
 
 @Preview
 @Composable
-private fun HorizontalCalendarPreview() {
-    HorizontalCalendarPage()
+private fun horizontalCalendarPreview() {
+    horizontalCalendarPage()
 }

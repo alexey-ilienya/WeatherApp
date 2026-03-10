@@ -45,20 +45,22 @@ data class WeekData internal constructor(
 
     private fun getDay(dayOffset: Int): WeekDay {
         val date = firstDayInWeek.plusDays(dayOffset.toLong())
-        val position = when {
-            date < desiredStartDate -> WeekDayPosition.InDate
-            date > desiredEndDate -> WeekDayPosition.OutDate
-            else -> WeekDayPosition.RangeDate
-        }
+        val position =
+            when {
+                date < desiredStartDate -> WeekDayPosition.InDate
+                date > desiredEndDate -> WeekDayPosition.OutDate
+                else -> WeekDayPosition.RangeDate
+            }
         return WeekDay(date, position)
     }
 }
 
-fun getWeekIndex(startDateAdjusted: LocalDate, date: LocalDate): Int {
-    return ChronoUnit.WEEKS.between(startDateAdjusted, date).toInt()
-}
+fun getWeekIndex(
+    startDateAdjusted: LocalDate,
+    date: LocalDate,
+): Int = ChronoUnit.WEEKS.between(startDateAdjusted, date).toInt()
 
-fun getWeekIndicesCount(startDateAdjusted: LocalDate, endDateAdjusted: LocalDate): Int {
-    // Add one to include the start week itself!
-    return getWeekIndex(startDateAdjusted, endDateAdjusted) + 1
-}
+fun getWeekIndicesCount(
+    startDateAdjusted: LocalDate,
+    endDateAdjusted: LocalDate,
+): Int = getWeekIndex(startDateAdjusted, endDateAdjusted) + 1

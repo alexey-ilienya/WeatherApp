@@ -40,15 +40,16 @@ public fun rememberCalendarState(
     firstVisibleMonth: YearMonth = startMonth,
     firstDayOfWeek: DayOfWeek = firstDayOfWeekFromLocale(),
     outDateStyle: OutDateStyle = OutDateStyle.EndOfRow,
-): CalendarState {
-    return rememberSaveable(
-        inputs = arrayOf<Any>(
-            startMonth,
-            endMonth,
-            firstVisibleMonth,
-            firstDayOfWeek,
-            outDateStyle,
-        ),
+): CalendarState =
+    rememberSaveable(
+        inputs =
+            arrayOf<Any>(
+                startMonth,
+                endMonth,
+                firstVisibleMonth,
+                firstDayOfWeek,
+                outDateStyle,
+            ),
         saver = CalendarState.Saver,
     ) {
         CalendarState(
@@ -60,7 +61,6 @@ public fun rememberCalendarState(
             visibleItemState = null,
         )
     }
-}
 
 /**
  * A state object that can be hoisted to control and observe calendar properties.
@@ -149,7 +149,11 @@ class CalendarState internal constructor(
      * @see [firstVisibleMonth]
      */
     public val lastVisibleMonth: CalendarMonth by derivedStateOf {
-        store[listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0]
+        store[
+            listState.layoutInfo.visibleItemsInfo
+                .lastOrNull()
+                ?.index ?: 0,
+        ]
     }
 
     /**
@@ -181,24 +185,27 @@ class CalendarState internal constructor(
     public val interactionSource: InteractionSource
         get() = listState.interactionSource
 
-    internal val listState = LazyListState(
-        firstVisibleItemIndex = visibleItemState?.firstVisibleItemIndex
-            ?: getScrollIndex(firstVisibleMonth) ?: 0,
-        firstVisibleItemScrollOffset = visibleItemState?.firstVisibleItemScrollOffset ?: 0,
-    )
+    internal val listState =
+        LazyListState(
+            firstVisibleItemIndex =
+                visibleItemState?.firstVisibleItemIndex
+                    ?: getScrollIndex(firstVisibleMonth) ?: 0,
+            firstVisibleItemScrollOffset = visibleItemState?.firstVisibleItemScrollOffset ?: 0,
+        )
 
     internal val placementInfo = ItemPlacementInfo()
 
     internal var calendarInfo by mutableStateOf(CalendarInfo(indexCount = 0))
 
-    internal val store = DataStore { offset ->
-        getCalendarMonthData(
-            startMonth = this.startMonth,
-            offset = offset,
-            firstDayOfWeek = this.firstDayOfWeek,
-            outDateStyle = this.outDateStyle,
-        ).calendarMonth
-    }
+    internal val store =
+        DataStore { offset ->
+            getCalendarMonthData(
+                startMonth = this.startMonth,
+                offset = offset,
+                firstDayOfWeek = this.firstDayOfWeek,
+                outDateStyle = this.outDateStyle,
+            ).calendarMonth
+        }
 
     init {
         monthDataChanged() // Update indexCount initially.
@@ -212,11 +219,12 @@ class CalendarState internal constructor(
         // mutableStateMapOf() as the backing store for DataStore() to ensure recomposition
         // but not sure how compose handles recomposition of a lazy list that reads from
         // such map when an entry unrelated to the visible indices changes.
-        calendarInfo = CalendarInfo(
-            indexCount = getMonthIndicesCount(startMonth, endMonth),
-            firstDayOfWeek = firstDayOfWeek,
-            outDateStyle = outDateStyle,
-        )
+        calendarInfo =
+            CalendarInfo(
+                indexCount = getMonthIndicesCount(startMonth, endMonth),
+                firstDayOfWeek = firstDayOfWeek,
+                outDateStyle = outDateStyle,
+            )
     }
 
     /**
@@ -279,8 +287,7 @@ class CalendarState internal constructor(
      *
      * @see [animateScrollToDay]
      */
-    public suspend fun scrollToDay(day: CalendarDay): Unit =
-        scrollToDay(day, animate = false)
+    public suspend fun scrollToDay(day: CalendarDay): Unit = scrollToDay(day, animate = false)
 
     /**
      * Animate (smooth scroll) to the given [day].
@@ -290,16 +297,21 @@ class CalendarState internal constructor(
      *
      * @see [scrollToDay]
      */
-    public suspend fun animateScrollToDay(day: CalendarDay): Unit =
-        scrollToDay(day, animate = true)
+    public suspend fun animateScrollToDay(day: CalendarDay): Unit = scrollToDay(day, animate = true)
 
-    private suspend fun scrollToDay(day: CalendarDay, animate: Boolean) {
-        val monthIndex = getScrollIndex(day.positionYearMonth) ?: return
+    private suspend fun scrollToDay(
+        day: CalendarDay,
+        animate: Boolean,
+    ) {
+        val monthIndex =
+            getScrollIndex(day.positionYearMonth)
+                ?: return
         val weeksOfMonth = store[monthIndex].weekDays
-        val dayIndex = when (layoutInfo.orientation) {
-            Orientation.Vertical -> weeksOfMonth.indexOfFirstOrNull { it.contains(day) }
-            Orientation.Horizontal -> firstDayOfWeek.daysUntil(day.date.dayOfWeek)
-        } ?: return
+        val dayIndex =
+            when (layoutInfo.orientation) {
+                Orientation.Vertical -> weeksOfMonth.indexOfFirstOrNull { it.contains(day) }
+                Orientation.Horizontal -> firstDayOfWeek.daysUntil(day.date.dayOfWeek)
+            } ?: return
         val dayInfo = placementInfo.awaitFirstDayOffsetAndSize(layoutInfo.orientation) ?: return
         val scrollOffset = dayInfo.offset + dayInfo.size * dayIndex
         if (animate) {
@@ -331,31 +343,33 @@ class CalendarState internal constructor(
     ): Unit = listState.scroll(scrollPriority, block)
 
     public companion object {
-        internal val Saver: Saver<CalendarState, Any> = listSaver(
-            save = {
-                listOf(
-                    it.startMonth,
-                    it.endMonth,
-                    it.firstVisibleMonth.yearMonth,
-                    it.firstDayOfWeek,
-                    it.outDateStyle,
-                    it.listState.firstVisibleItemIndex,
-                    it.listState.firstVisibleItemScrollOffset,
-                )
-            },
-            restore = {
-                CalendarState(
-                    startMonth = it[0] as YearMonth,
-                    endMonth = it[1] as YearMonth,
-                    firstVisibleMonth = it[2] as YearMonth,
-                    firstDayOfWeek = it[3] as DayOfWeek,
-                    outDateStyle = it[4] as OutDateStyle,
-                    visibleItemState = VisibleItemState(
-                        firstVisibleItemIndex = it[5] as Int,
-                        firstVisibleItemScrollOffset = it[6] as Int,
-                    ),
-                )
-            },
-        )
+        internal val Saver: Saver<CalendarState, Any> =
+            listSaver(
+                save = {
+                    listOf(
+                        it.startMonth,
+                        it.endMonth,
+                        it.firstVisibleMonth.yearMonth,
+                        it.firstDayOfWeek,
+                        it.outDateStyle,
+                        it.listState.firstVisibleItemIndex,
+                        it.listState.firstVisibleItemScrollOffset,
+                    )
+                },
+                restore = {
+                    CalendarState(
+                        startMonth = it[0] as YearMonth,
+                        endMonth = it[1] as YearMonth,
+                        firstVisibleMonth = it[2] as YearMonth,
+                        firstDayOfWeek = it[3] as DayOfWeek,
+                        outDateStyle = it[4] as OutDateStyle,
+                        visibleItemState =
+                            VisibleItemState(
+                                firstVisibleItemIndex = it[5] as Int,
+                                firstVisibleItemScrollOffset = it[6] as Int,
+                            ),
+                    )
+                },
+            )
     }
 }

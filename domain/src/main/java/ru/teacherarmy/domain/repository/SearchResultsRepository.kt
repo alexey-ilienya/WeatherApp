@@ -5,7 +5,7 @@ import ru.teacherarmy.domain.model.City
 import ru.teacherarmy.domain.model.SearchResults
 
 interface SearchResultsRepository {
-    suspend fun GetSearchResutls(cityName : String): List<SearchResults>
+    suspend fun getSearchResults(cityName: String): List<SearchResults>
 
     suspend fun insertCity(city: City)
 

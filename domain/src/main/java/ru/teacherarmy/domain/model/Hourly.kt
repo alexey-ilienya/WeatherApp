@@ -6,5 +6,5 @@ data class Hourly(
     val temperature_2m: Double,
     val time: LocalDateTime,
     val windspeed_120m: Double,
-    val weatherType: WeatherType
+    val weatherType: WeatherType,
 )

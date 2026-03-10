@@ -8,7 +8,10 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import kotlin.LazyThreadSafetyMode.NONE
 
-data class DateSelection(val startDate: LocalDate? = null, val endDate: LocalDate? = null) {
+data class DateSelection(
+    val startDate: LocalDate? = null,
+    val endDate: LocalDate? = null,
+) {
     val daysBetween by lazy(NONE) {
         if (startDate == null || endDate == null) {
             null

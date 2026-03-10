@@ -1,7 +1,6 @@
 package ru.teacherarmy.presentation.composables
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,17 +41,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.teacherarmy.calendar.composables.LocalScaffoldPaddingValues
-import ru.teacherarmy.calendar.composables.VerticalCalendar
 import ru.teacherarmy.calendar.composables.backgroundHighlight
 import ru.teacherarmy.calendar.composables.rememberCalendarState
-import ru.teacherarmy.calendar.extensions.StatusBarColorUpdateEffect
+import ru.teacherarmy.calendar.composables.verticalCalendar
 import ru.teacherarmy.calendar.extensions.clickable
 import ru.teacherarmy.calendar.extensions.daysOfWeek
 import ru.teacherarmy.calendar.extensions.displayText
-import ru.teacherarmy.calendar.model.DayPosition
+import ru.teacherarmy.calendar.extensions.statusBarColorUpdateEffect
 import ru.teacherarmy.calendar.model.CalendarDay
 import ru.teacherarmy.calendar.model.CalendarMonth
 import ru.teacherarmy.calendar.model.DateSelection
+import ru.teacherarmy.calendar.model.DayPosition
 import ru.teacherarmy.presentation.R
 import ru.teacherarmy.presentation.composables.ContinuousSelectionHelper.getSelection
 import java.time.DayOfWeek
@@ -64,7 +63,7 @@ private val selectionColor = primaryColor
 private val continuousSelectionColor = Color.LightGray.copy(alpha = 0.3f)
 
 @Composable
-fun VerticalCalendarPage(
+fun verticalCalendarPage(
     close: () -> Unit = {},
     dateSelected: (startDate: LocalDate, endDate: LocalDate) -> Unit = { _, _ -> },
 ) {
@@ -74,32 +73,34 @@ fun VerticalCalendarPage(
     val today = remember { LocalDate.now() }
     var selection by remember { mutableStateOf(DateSelection()) }
     val daysOfWeek = remember { daysOfWeek() }
-    StatusBarColorUpdateEffect(Color.White)
+    statusBarColorUpdateEffect(Color.White)
     MaterialTheme(colorScheme = MaterialTheme.colorScheme.copy(primary = primaryColor)) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-                .padding(LocalScaffoldPaddingValues.current),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(Color.White)
+                    .padding(LocalScaffoldPaddingValues.current),
         ) {
             Column {
-                val state = rememberCalendarState(
-                    startMonth = startMonth,
-                    endMonth = endMonth,
-                    firstVisibleMonth = currentMonth,
-                    firstDayOfWeek = daysOfWeek.first(),
-                )
-                CalendarTop(
+                val state =
+                    rememberCalendarState(
+                        startMonth = startMonth,
+                        endMonth = endMonth,
+                        firstVisibleMonth = currentMonth,
+                        firstDayOfWeek = daysOfWeek.first(),
+                    )
+                calendarTop(
                     daysOfWeek = daysOfWeek,
                     selection = selection,
                     close = close,
                     clearDates = { selection = DateSelection() },
                 )
-                VerticalCalendar(
+                verticalCalendar(
                     state = state,
                     contentPadding = PaddingValues(bottom = 100.dp),
                     dayContent = { value ->
-                        Day(
+                        day(
                             value,
                             today = today,
                             selection = selection,
@@ -107,22 +108,24 @@ fun VerticalCalendarPage(
                             if (day.position == DayPosition.MonthDate &&
                                 (day.date == today || day.date.isAfter(today))
                             ) {
-                                selection = getSelection(
-                                    clickedDate = day.date,
-                                    dateSelection = selection,
-                                )
+                                selection =
+                                    getSelection(
+                                        clickedDate = day.date,
+                                        dateSelection = selection,
+                                    )
                             }
                         }
                     },
-                    monthHeader = { month -> MonthHeader(month) },
+                    monthHeader = { month -> monthHeader(month) },
                 )
             }
-            CalendarBottom(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth()
-                    .background(Color.White)
-                    .align(Alignment.BottomCenter),
+            calendarBottom(
+                modifier =
+                    Modifier
+                        .wrapContentHeight()
+                        .fillMaxWidth()
+                        .background(Color.White)
+                        .align(Alignment.BottomCenter),
                 selection = selection,
                 save = {
                     val (startDate, endDate) = selection
@@ -136,7 +139,7 @@ fun VerticalCalendarPage(
 }
 
 @Composable
-private fun Day(
+private fun day(
     day: CalendarDay,
     today: LocalDate,
     selection: DateSelection,
@@ -144,23 +147,23 @@ private fun Day(
 ) {
     var textColor = Color.Transparent
     Box(
-        modifier = Modifier
-            .aspectRatio(1f) // This is important for square-sizing!
-            .clickable(
-                enabled = day.position == DayPosition.MonthDate && day.date >= today,
-                showRipple = false,
-                onClick = { onClick(day) },
-            )
-            .backgroundHighlight(
-                day = day,
-                today = today,
-                selection = selection,
-                selectionColor = selectionColor,
-                continuousSelectionColor = continuousSelectionColor,
-                inactiveTextColorResourceId = R.color.inactive_text_color,
-                greyColorResourceId = R.color.example_4_grey,
-                textColor = { textColor = it }
-            ),
+        modifier =
+            Modifier
+                .aspectRatio(1f) // This is important for square-sizing!
+                .clickable(
+                    enabled = day.position == DayPosition.MonthDate && day.date >= today,
+                    showRipple = false,
+                    onClick = { onClick(day) },
+                ).backgroundHighlight(
+                    day = day,
+                    today = today,
+                    selection = selection,
+                    selectionColor = selectionColor,
+                    continuousSelectionColor = continuousSelectionColor,
+                    inactiveTextColorResourceId = R.color.inactive_text_color,
+                    greyColorResourceId = R.color.example_4_grey,
+                    textColor = { textColor = it },
+                ),
         contentAlignment = Alignment.Center,
     ) {
         Text(
@@ -173,11 +176,12 @@ private fun Day(
 }
 
 @Composable
-private fun MonthHeader(calendarMonth: CalendarMonth) {
+private fun monthHeader(calendarMonth: CalendarMonth) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 12.dp, bottom = 8.dp, start = 16.dp, end = 16.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp, bottom = 8.dp, start = 16.dp, end = 16.dp),
     ) {
         Text(
             textAlign = TextAlign.Center,
@@ -189,7 +193,7 @@ private fun MonthHeader(calendarMonth: CalendarMonth) {
 }
 
 @Composable
-private fun CalendarTop(
+private fun calendarTop(
     modifier: Modifier = Modifier,
     daysOfWeek: List<DayOfWeek>,
     selection: DateSelection,
@@ -198,9 +202,10 @@ private fun CalendarTop(
 ) {
     Column(modifier.fillMaxWidth()) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 6.dp, bottom = 10.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 6.dp, bottom = 10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             Row(
@@ -208,29 +213,29 @@ private fun CalendarTop(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .aspectRatio(1f)
-                        .clip(CircleShape)
-                        .clickable(
-                            enabled = true,
-                            showRipple = true,
-                            onClick = close
-                        )
-                        .padding(12.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxHeight()
+                            .aspectRatio(1f)
+                            .clip(CircleShape)
+                            .clickable(
+                                enabled = true,
+                                showRipple = true,
+                                onClick = close,
+                            ).padding(12.dp),
                     painter = painterResource(id = R.drawable.ic_close),
                     contentDescription = "Close",
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(percent = 50))
-                        .clickable(
-                            enabled = true,
-                            showRipple = true,
-                            onClick = clearDates
-                        )
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    modifier =
+                        Modifier
+                            .clip(RoundedCornerShape(percent = 50))
+                            .clickable(
+                                enabled = true,
+                                showRipple = true,
+                                onClick = clearDates,
+                            ).padding(horizontal = 16.dp, vertical = 8.dp),
                     text = stringResource(R.string.clear),
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.End,
@@ -238,11 +243,12 @@ private fun CalendarTop(
             }
             val daysBetween = selection.daysBetween
             val textDays = pluralStringResource(R.plurals.days, (daysBetween ?: 0L).toInt())
-            val text = if (daysBetween == null) {
-                textDays
-            } else {
-                "$daysBetween $textDays"
-            }
+            val text =
+                if (daysBetween == null) {
+                    textDays
+                } else {
+                    "$daysBetween $textDays"
+                }
             Text(
                 modifier = Modifier.padding(horizontal = 14.dp),
                 text = text,
@@ -250,9 +256,10 @@ private fun CalendarTop(
                 fontSize = 24.sp,
             )
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 4.dp),
             ) {
                 for (dayOfWeek in daysOfWeek) {
                     Text(
@@ -270,7 +277,7 @@ private fun CalendarTop(
 }
 
 @Composable
-private fun CalendarBottom(
+private fun calendarBottom(
     modifier: Modifier = Modifier,
     selection: DateSelection,
     save: () -> Unit,
@@ -287,9 +294,10 @@ private fun CalendarBottom(
             )
             Spacer(modifier = Modifier.weight(1f))
             Button(
-                modifier = Modifier
-                    .height(40.dp)
-                    .width(100.dp),
+                modifier =
+                    Modifier
+                        .height(40.dp)
+                        .width(100.dp),
                 onClick = save,
                 enabled = selection.daysBetween != null,
             ) {
@@ -301,6 +309,6 @@ private fun CalendarBottom(
 
 @Preview
 @Composable
-private fun Example2Preview() {
-    VerticalCalendarPage()
+private fun example2Preview() {
+    verticalCalendarPage()
 }

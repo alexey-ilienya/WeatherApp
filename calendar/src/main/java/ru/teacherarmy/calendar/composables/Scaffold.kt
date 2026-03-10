@@ -19,9 +19,7 @@ fun Modifier.applyScaffoldHorizontalPaddings() =
     )
 
 @Composable
-fun Modifier.applyScaffoldTopPadding() =
-    padding(top = LocalScaffoldPaddingValues.current.calculateTopPadding())
+fun Modifier.applyScaffoldTopPadding() = padding(top = LocalScaffoldPaddingValues.current.calculateTopPadding())
 
 @Composable
-fun Modifier.applyScaffoldBottomPadding() =
-    padding(bottom = LocalScaffoldPaddingValues.current.calculateBottomPadding())
+fun Modifier.applyScaffoldBottomPadding() = padding(bottom = LocalScaffoldPaddingValues.current.calculateBottomPadding())
