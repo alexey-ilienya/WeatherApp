@@ -36,26 +36,27 @@ internal fun KtDeclaration.resolve(): DeclarationDescriptor? =
         .getInstance(project)
         .resolveToDescriptor(this)
 
-internal fun KtDeclaration.getKotlinType(): KotlinType? {
-    return try {
+internal fun KtDeclaration.getKotlinType(): KotlinType? =
+    try {
         when (val descriptor = resolve()) {
             is ValueDescriptor -> descriptor.type
-            is CallableDescriptor -> if (descriptor is FunctionDescriptor && descriptor.isSuspend)
-                descriptor.module.builtIns.nullableAnyType else descriptor.returnType
-
+            is CallableDescriptor ->
+                if (descriptor is FunctionDescriptor && descriptor.isSuspend) {
+                    descriptor.module.builtIns.nullableAnyType
+                } else {
+                    descriptor.returnType
+                }
             else -> null
         }
     } catch (e: Exception) {
         null
     }
-}
 
 internal fun KtLightMember<PsiMember>.kotlinTypeName(): String? =
     kotlinOrigin
         ?.getKotlinType()
         ?.nameIfStandardType
         ?.asString()
-
 
 fun UField.isTypeMutable(evaluator: JavaEvaluator): Boolean {
     // Trivial check for Kotlin mutable collections. See its doc for details.
@@ -67,7 +68,9 @@ fun UField.isTypeMutable(evaluator: JavaEvaluator): Boolean {
         return true
     }
 
-    if ((sourcePsi as? KtParameter)?.getKotlinType()?.getKotlinTypeFqName(true)
+    if ((sourcePsi as? KtParameter)
+            ?.getKotlinType()
+            ?.getKotlinTypeFqName(true)
             ?.matchesAnyOf(KnownMutableKotlinCollections) == true
     ) {
         return true
@@ -85,8 +88,7 @@ val KnownMutableKotlinCollections =
         ".*MutableSet(\\s)?<.*>\\??",
         ".*MutableList(\\s)?<.*>\\??",
         ".*MutableCollection(\\s)?<.*>\\??",
-    )
-        .map(::Regex)
+    ).map(::Regex)
 
 val KnownMutableCommonTypesSimpleNames =
     setOf(
@@ -156,41 +158,44 @@ fun findAllInnerFields(
     visitedTypes: MutableSet<PsiClassType> = mutableSetOf(),
 ): Set<UField> {
     val actualReturnType = findGenericClassType(typeRef)
-    val typeClass: UClass = actualReturnType
-        .resolve()
-        .toUElement() as? UClass
-        ?: return emptySet()
+    val typeClass: UClass =
+        actualReturnType
+            .resolve()
+            .toUElement() as? UClass
+            ?: return emptySet()
 
     if (visitedTypes.contains(actualReturnType)) {
         return setOf()
     }
     visitedTypes.add(actualReturnType)
 
-    val innerFields: Set<UField> = typeClass
-        .fields
-        .filterNot(UField::hasSuperClassWithNonFinalValue)
-        .filterNot { it.isStatic && it !is PsiEnumConstant }
-        .toSet()
+    val innerFields: Set<UField> =
+        typeClass
+            .fields
+            .filterNot(UField::hasSuperClassWithNonFinalValue)
+            .filterNot { it.isStatic && it !is PsiEnumConstant }
+            .toSet()
 
     return innerFields +
-            innerFields
-                .asSequence()
-                .filterNot { it.isStatic }
-                .map { it.type }
-                .filterIsInstance<PsiClassType>()
-                .filterNot { visitedTypes.contains(it) }
-                .map { innerTypeRef -> findAllInnerFields(innerTypeRef, visitedTypes) }
-                .flatten()
-                .toSet()
+        innerFields
+            .asSequence()
+            .filterNot { it.isStatic }
+            .map { it.type }
+            .filterIsInstance<PsiClassType>()
+            .filterNot { visitedTypes.contains(it) }
+            .map { innerTypeRef -> findAllInnerFields(innerTypeRef, visitedTypes) }
+            .flatten()
+            .toSet()
 }
 
 fun UField.hasSuperClassWithNonFinalValue(): Boolean =
     hasThrowableSuperClass(getContainingUClass()) || hasStringSuperClass(getContainingUClass())
 
 fun findGenericClassType(returnType: PsiClassType): PsiClassType {
-    val substitutor: PsiSubstitutor = returnType
-        .resolveGenerics()
-        .substitutor
+    val substitutor: PsiSubstitutor =
+        returnType
+            .resolveGenerics()
+            .substitutor
     return if (substitutor == PsiSubstitutor.EMPTY) {
         returnType
     } else {

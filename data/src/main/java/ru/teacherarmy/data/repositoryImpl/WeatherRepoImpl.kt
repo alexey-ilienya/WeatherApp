@@ -12,31 +12,46 @@ import ru.teacherarmy.domain.repository.WeatherRepository
 import java.time.DayOfWeek
 import javax.inject.Inject
 
-class WeatherRepoImpl @Inject constructor(
-    private val weatherApiService: WeatherApi
-): WeatherRepository, ApiRequest() {
-    override suspend fun getCurrentWeather(lat: Double, lon: Double): CurrentWeather? {
-        val response = apiRequest {
-            weatherApiService.getCurrentWeatherData(lat, lon, BuildConfig.WEATHER_API_KEY)
+class WeatherRepoImpl
+    @Inject
+    constructor(
+        private val weatherApiService: WeatherApi,
+    ) : ApiRequest(),
+        WeatherRepository {
+        override suspend fun getCurrentWeather(
+            lat: Double,
+            lon: Double,
+        ): CurrentWeather? {
+            val response =
+                apiRequest {
+                    weatherApiService.getCurrentWeatherData(lat, lon, BuildConfig.WEATHER_API_KEY)
+                }
+            return response?.toDomainModel()
         }
-        return response?.toDomainModel()
-    }
 
-    override suspend fun getHourlyWeather(lat: Double, lon: Double): List<Hourly>? {
-        val response = apiRequest {
-            weatherApiService.getHourlyForecastData(lat, lon, BuildConfig.WEATHER_API_KEY)
+        override suspend fun getHourlyWeather(
+            lat: Double,
+            lon: Double,
+        ): List<Hourly>? {
+            val response =
+                apiRequest {
+                    weatherApiService.getHourlyForecastData(lat, lon, BuildConfig.WEATHER_API_KEY)
+                }
+            return response?.toDomainModel()
         }
-        return response?.toDomainModel()
-    }
 
-    override suspend fun getDailyWeather(lat: Double, lon: Double): Map<DayOfWeek, List<Daily>> {
-        val response = apiRequest {
-            weatherApiService.getDailyForecastData(lat, lon, BuildConfig.WEATHER_API_KEY)
+        override suspend fun getDailyWeather(
+            lat: Double,
+            lon: Double,
+        ): Map<DayOfWeek, List<Daily>> {
+            val response =
+                apiRequest {
+                    weatherApiService.getDailyForecastData(lat, lon, BuildConfig.WEATHER_API_KEY)
+                }
+            return mapDailyWeatherByDayOfWeek(response?.toDomainModel() ?: arrayListOf<Daily>())
         }
-        return mapDailyWeatherByDayOfWeek(response?.toDomainModel() ?: arrayListOf<Daily>())
-    }
 
-    companion object {
-        const val COUNTRY_CODE_RU = 643
+        companion object {
+            const val COUNTRY_CODE_RU = 643
+        }
     }
-}

@@ -8,7 +8,6 @@ import ru.teacherarmy.check.NetworkLayerClassSerializedNameDetector.Companion.IS
 import java.util.ArrayList
 
 internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() {
-
     override fun getIssues(): List<Issue> {
         val issues: MutableList<Issue> = ArrayList<Issue>()
         val detectorClass: Class<out Detector?> = detectorInstance.javaClass
@@ -23,9 +22,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
         return issues
     }
 
-    override fun getDetector(): Detector {
-        return NetworkLayerClassSerializedNameDetector()
-    }
+    override fun getDetector(): Detector = NetworkLayerClassSerializedNameDetector()
 
     @Test
     fun `test kotlin file with SerializedName`() {
@@ -44,7 +41,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                   @GET("url") 
                   fun get(): Dto
                 }
-                """
+                """,
                 ).indented(),
                 kotlin(
                     """
@@ -64,10 +61,9 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                     val EMPTY = Dto(0, 0, "", false)
                   }
                 }
-                """
-                ).indented()
-            )
-            .issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
+                """,
+                ).indented(),
+            ).issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
             .run()
             .expectClean()
     }
@@ -89,7 +85,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                   @GET("url") 
                   fun get(): Dto
                 }
-                """
+                """,
                 ).indented(),
                 kotlin(
                     """
@@ -100,7 +96,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                 data class Dto(
                     @SerializedName("type") val type: PremiumType
                 )
-                """
+                """,
                 ).indented(),
                 kotlin(
                     """
@@ -113,10 +109,9 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                   @SerializedName("SCHUFA") SCHUFA,
                   ARVATO;
                 }
-                """
-                ).indented()
-            )
-            .issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
+                """,
+                ).indented(),
+            ).issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
             .run()
             .expect(
                 """
@@ -124,7 +119,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                 fun get(): Dto
                     ~~~
               0 errors, 0 warnings
-            """
+            """,
             )
     }
 
@@ -145,7 +140,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                   @GET("url") 
                   fun get(): Dto
                 }
-                """
+                """,
                 ).indented(),
                 kotlin(
                     """
@@ -156,7 +151,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                 data class Dto(
                     @SerializedName("type") val type: PremiumType
                 )
-                """
+                """,
                 ).indented(),
                 kotlin(
                     """
@@ -169,10 +164,9 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                   @SerializedName("SCHUFA") SCHUFA(1),
                   ARVATO(2);
                 }
-                """
-                ).indented()
-            )
-            .issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
+                """,
+                ).indented(),
+            ).issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
             .run()
             .expect(
                 """
@@ -180,7 +174,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                 fun get(): Dto
                     ~~~
               0 errors, 0 warnings
-            """
+            """,
             )
     }
 
@@ -201,7 +195,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                   @GET("url")
                   fun get(): Dto
                 }
-                """
+                """,
                 ).indented(),
                 kotlin(
                     """
@@ -214,10 +208,9 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                     val totalNewResults: Int,
                     @SerializedName("name") val name: String
                 )
-                """
-                ).indented()
-            )
-            .issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
+                """,
+                ).indented(),
+            ).issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
             .run()
             .expect(
                 """
@@ -225,7 +218,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
               fun get(): Dto
                   ~~~
             0 errors, 0 warnings
-            """
+            """,
             )
     }
 
@@ -246,7 +239,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                   @GET("url")
                   suspend fun get(some:String, iasda: Int): Dto
                 }
-                """
+                """,
                 ).indented(),
                 kotlin(
                     """
@@ -259,10 +252,9 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                     val totalNewResults: Int,
                     @SerializedName("name") val name: String
                 )
-                """
-                ).indented()
-            )
-            .issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
+                """,
+                ).indented(),
+            ).issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
             .run()
             .expect(
                 """
@@ -270,7 +262,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                 suspend fun get(some:String, iasda: Int): Dto
                             ~~~
               0 errors, 0 warnings
-            """
+            """,
             )
     }
 
@@ -292,7 +284,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                   @GET("url") 
                   fun get(): Dto
                 }
-                """
+                """,
                 ).indented(),
                 kotlin(
                     """
@@ -305,7 +297,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                   @GET("url2") 
                   fun get2(): Dto
                 }
-                """
+                """,
                 ).indented(),
                 kotlin(
                     """
@@ -315,10 +307,9 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                     val totalResults: Int,
                     val totalNewResults: Int
                 )
-                """
-                ).indented()
-            )
-            .issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
+                """,
+                ).indented(),
+            ).issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
             .run()
             .expect(
                 """
@@ -329,7 +320,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
               fun get2(): Dto
                   ~~~~
             0 errors, 0 warnings
-            """
+            """,
             )
     }
 
@@ -350,7 +341,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                   @GET("url") 
                   fun get(): Dto
                 }
-                """
+                """,
                 ).indented(),
                 kotlin(
                     """
@@ -360,7 +351,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                     val totalResults: Int,
                     var innerDto: InnerDto
                 )
-                """
+                """,
                 ).indented(),
                 kotlin(
                     """
@@ -369,10 +360,9 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                 class InnerDto(
                     var innerResults: Int
                 )
-                """
-                ).indented()
-            )
-            .issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
+                """,
+                ).indented(),
+            ).issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
             .run()
             .expect(
                 """
@@ -380,7 +370,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
               fun get(): Dto
                   ~~~
             0 errors, 0 warnings
-            """
+            """,
             )
     }
 
@@ -402,7 +392,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                   @GET("url") 
                   fun get(): Call<List<Dto>>
                 }
-                """
+                """,
                 ).indented(),
                 kotlin(
                     """
@@ -412,10 +402,9 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                     val totalResults: Int,
                     val totalNewResults: Int
                 )
-                """
-                ).indented()
-            )
-            .issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
+                """,
+                ).indented(),
+            ).issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
             .run()
             .expect(
                 """
@@ -423,7 +412,7 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
               fun get(): Call<List<Dto>>
                   ~~~
             0 errors, 0 warnings
-            """
+            """,
             )
     }
 
@@ -445,10 +434,9 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                   @GET("url") 
                   fun get(): Call<List<Unit>>
                 }
-                """
-                ).indented()
-            )
-            .issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
+                """,
+                ).indented(),
+            ).issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
             .run()
             .expectClean()
     }
@@ -470,10 +458,9 @@ internal class NetworkLayerClassSerializedNameDetectorTest : LintDetectorTest() 
                   @GET("url") 
                   fun get(): Unit
                 }
-                """
-                ).indented()
-            )
-            .issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
+                """,
+                ).indented(),
+            ).issues(ISSUE_NETWORK_LAYER_CLASS_SERIALIZED_NAME_RULE)
             .run()
             .expectClean()
     }

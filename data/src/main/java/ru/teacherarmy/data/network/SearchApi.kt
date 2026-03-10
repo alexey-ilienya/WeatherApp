@@ -7,5 +7,9 @@ import ru.teacherarmy.homework1.data.model.SearchResponse
 
 interface SearchApi {
     @GET("/geo/1.0/direct")
-    suspend fun getSearchResults(@Query("q") searchQuery: String, @Query("appid") appId: String, @Query("lang") lang: String = "ru"): Response<List<SearchResponse>>
+    suspend fun getSearchResults(
+        @Query("q") searchQuery: String,
+        @Query("appid") appId: String,
+        @Query("lang") lang: String = "ru",
+    ): Response<List<SearchResponse>>
 }

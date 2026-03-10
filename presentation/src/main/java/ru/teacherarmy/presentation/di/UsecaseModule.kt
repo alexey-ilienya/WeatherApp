@@ -16,27 +16,17 @@ import ru.teacherarmy.domain.usecase.GetSearchResultsUseCase
 @InstallIn(ViewModelComponent::class)
 object UsecaseModule {
     @Provides
-    fun provideGetCurrentWeather(weatherRepo: WeatherRepository): GetCurrentWeatherUseCase {
-        return GetCurrentWeatherUseCase(weatherRepo)
-    }
+    fun provideGetCurrentWeather(weatherRepo: WeatherRepository): GetCurrentWeatherUseCase = GetCurrentWeatherUseCase(weatherRepo)
 
     @Provides
-    fun provideGetDailyWeather(weatherRepo: WeatherRepository): GetDailyWeatherUseCase {
-        return GetDailyWeatherUseCase(weatherRepo)
-    }
+    fun provideGetDailyWeather(weatherRepo: WeatherRepository): GetDailyWeatherUseCase = GetDailyWeatherUseCase(weatherRepo)
 
     @Provides
-    fun provideGetHourlyWeather(weatherRepo: WeatherRepository): GetHourlyWeatherUseCase {
-        return GetHourlyWeatherUseCase(weatherRepo)
-    }
+    fun provideGetHourlyWeather(weatherRepo: WeatherRepository): GetHourlyWeatherUseCase = GetHourlyWeatherUseCase(weatherRepo)
 
     @Provides
-    fun provideSearchResults(searchRepo: SearchResultsRepository): GetSearchResultsUseCase {
-        return GetSearchResultsUseCase(searchRepo)
-    }
+    fun provideSearchResults(searchRepo: SearchResultsRepository): GetSearchResultsUseCase = GetSearchResultsUseCase(searchRepo)
 
     @Provides
-    fun provideDeleteCityUseCase(searchRepo: SearchResultsRepository): DeleteCityUseCase {
-        return DeleteCityUseCase(searchRepo)
-    }
+    fun provideDeleteCityUseCase(searchRepo: SearchResultsRepository): DeleteCityUseCase = DeleteCityUseCase(searchRepo)
 }

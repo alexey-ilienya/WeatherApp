@@ -23,47 +23,48 @@ import java.time.DayOfWeek
 import java.time.format.TextStyle
 
 @Composable
-fun DailyWeather(
-    state: DailyWeatherState
-) {
-    WeatherLazyRow(weatherData = state.data)
+fun dailyWeather(state: DailyWeatherState) {
+    weatherLazyRow(weatherData = state.data)
 }
 
 @Composable
-fun WeatherLazyRow(weatherData: Map<DayOfWeek, List<Daily>>?) {
+fun weatherLazyRow(weatherData: Map<DayOfWeek, List<Daily>>?) {
     LazyRow {
         weatherData?.entries?.let {
             items(it.toList()) { (dayOfWeek, dailyWeatherList) ->
-                WeatherItem(dayOfWeek, dailyWeatherList)
+                weatherItem(dayOfWeek, dailyWeatherList)
             }
         }
     }
 }
 
 @Composable
-fun WeatherItem(dayOfWeek: DayOfWeek, dailyWeatherList: List<Daily>) {
+fun weatherItem(
+    dayOfWeek: DayOfWeek,
+    dailyWeatherList: List<Daily>,
+) {
     Column(
         modifier = Modifier.padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(text = dayOfWeek.getDisplayName(TextStyle.FULL, getCurrentLocale()))
         Spacer(modifier = Modifier.height(6.dp))
 
         dailyWeatherList.forEach { dailyWeatherItem ->
-
             Image(
                 painter = painterResource(id = dailyWeatherItem.weatherType.getDrawableResId()),
-                contentDescription = null, modifier = Modifier.size(50.dp)
+                contentDescription = null,
+                modifier = Modifier.size(50.dp),
             )
 
             Text(
                 text = stringResource(R.string.format_degrees, dailyWeatherItem.temperature_2m_max),
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.padding(8.dp),
             )
             Spacer(modifier = Modifier.height(3.dp))
             Text(
                 text = stringResource(R.string.format_degrees, dailyWeatherItem.temperature_2m_min),
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.padding(8.dp),
             )
         }
     }

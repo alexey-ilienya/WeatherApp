@@ -1,4 +1,4 @@
-package ru.teacherarmy.homework1.data.di
+package ru.teacherarmy.data.di
 
 import android.content.Context
 import dagger.Module
@@ -15,13 +15,11 @@ import javax.inject.Singleton
 object LocationModule {
     @Provides
     @Singleton
-    fun provideLocationTracker(defaultLocationTracker: DefaultLocationTracker): LocationTracker {
-        return defaultLocationTracker
-    }
+    fun provideLocationTracker(defaultLocationTracker: DefaultLocationTracker): LocationTracker = defaultLocationTracker
 
     @Provides
     @Singleton
-    fun provideContext(@ApplicationContext context: Context): Context {
-        return context
-    }
+    fun provideContext(
+        @ApplicationContext context: Context,
+    ): Context = context
 }

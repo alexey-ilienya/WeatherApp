@@ -24,64 +24,70 @@ import ru.teacherarmy.presentation.states.CurrentWeatherState
 import ru.teacherarmy.presentation.states.DailyWeatherState
 
 @Composable
-fun CurrentWeatherCard(
+fun currentWeatherCard(
     modifier: Modifier,
     currentState: CurrentWeatherState,
     dailyState: DailyWeatherState,
-    city: String
-
+    city: String,
 ) {
     currentState.data?.let {
         Card(
-            modifier = modifier
-                .padding(14.dp)
-                .fillMaxWidth()
-                .height(450.dp),
+            modifier =
+                modifier
+                    .padding(14.dp)
+                    .fillMaxWidth()
+                    .height(450.dp),
             shape = RoundedCornerShape(20.dp),
-            elevation = CardDefaults.outlinedCardElevation(10.dp)
-
-
+            elevation = CardDefaults.outlinedCardElevation(10.dp),
         ) {
             Column(
-                horizontalAlignment = Alignment.Start
+                horizontalAlignment = Alignment.Start,
             ) {
                 Text(
-                    text = city, fontSize = 45.sp, fontStyle = FontStyle.Normal,
-                    fontWeight = FontWeight.ExtraBold,
-                    modifier = Modifier.padding(start = 13.dp)
-                )
-                Text(
-                    stringResource(R.string.format_degrees, it.temperature), fontSize = 45.sp,
+                    text = city,
+                    fontSize = 45.sp,
                     fontStyle = FontStyle.Normal,
                     fontWeight = FontWeight.ExtraBold,
-                    modifier = Modifier.padding(start = 13.dp, bottom = 13.dp)
+                    modifier = Modifier.padding(start = 13.dp),
+                )
+                Text(
+                    stringResource(R.string.format_degrees, it.temperature),
+                    fontSize = 45.sp,
+                    fontStyle = FontStyle.Normal,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier.padding(start = 13.dp, bottom = 13.dp),
                 )
 
                 Spacer(modifier = Modifier.height(3.dp))
 
                 Text(
                     text = it.weatherType.weatherDesc,
-                    fontSize = 13.sp, fontStyle = FontStyle.Normal, fontWeight = FontWeight.Light,
-                    modifier = Modifier.padding(start = 13.dp)
+                    fontSize = 13.sp,
+                    fontStyle = FontStyle.Normal,
+                    fontWeight = FontWeight.Light,
+                    modifier = Modifier.padding(start = 13.dp),
                 )
 
                 Spacer(modifier = Modifier.height(0.5.dp))
                 Text(
-                    text = stringResource(R.string.format_wind_speed, it.windSpeed), fontSize =
-                        13.sp, fontStyle = FontStyle.Normal, fontWeight = FontWeight.Light,
-                    modifier = Modifier.padding(start = 13.dp)
+                    text = stringResource(R.string.format_wind_speed, it.windSpeed),
+                    fontSize = 13.sp,
+                    fontStyle = FontStyle.Normal,
+                    fontWeight = FontWeight.Light,
+                    modifier = Modifier.padding(start = 13.dp),
                 )
                 Divider(
-                    modifier = Modifier
-                        .padding(20.dp)
-                        .fillMaxWidth()
-                        .height(2.dp),
-                    color = Color.LightGray, thickness = 0.3.dp
+                    modifier =
+                        Modifier
+                            .padding(20.dp)
+                            .fillMaxWidth()
+                            .height(2.dp),
+                    color = Color.LightGray,
+                    thickness = 0.3.dp,
                 )
 
-                DailyWeather(state = dailyState)
+                dailyWeather(state = dailyState)
             }
         }
     }
-
 }

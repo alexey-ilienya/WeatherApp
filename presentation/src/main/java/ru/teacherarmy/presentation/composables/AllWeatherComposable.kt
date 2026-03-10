@@ -36,22 +36,21 @@ import ru.teacherarmy.presentation.viewmodels.SearchCityViewModel
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AllWeatherComposable(
+fun allWeatherComposable(
     navController: NavHostController,
     viewModel: CurrentWeatherViewModel,
     dailyWeatherViewModel: DailyWeatherViewModel,
     hourlyWeatherViewModel: HourlyWeatherViewModel,
-    searchCityViewModel: SearchCityViewModel
-
+    searchCityViewModel: SearchCityViewModel,
 ) {
     var permissionStatus by remember { mutableStateOf(false) }
     val permissionLauncher: ActivityResultLauncher<Array<String>> =
         rememberLauncherForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
+            ActivityResultContracts.RequestMultiplePermissions(),
         ) { permissions ->
             val granted =
                 permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true &&
-                        permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+                    permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
 
             if (granted) {
                 permissionStatus = true
@@ -73,8 +72,8 @@ fun AllWeatherComposable(
             permissionLauncher.launch(
                 arrayOf(
                     Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                ),
             )
         }
     }
@@ -83,14 +82,14 @@ fun AllWeatherComposable(
         refreshWeather,
         selectedLatitude,
         selectedLongitude,
-        permissionStatus
+        permissionStatus,
     ) {
         if (refreshWeather || selectedLatitude != null && selectedLongitude != null) {
             viewModel.fetchCurrentWeather(context, selectedLatitude.value, selectedLongitude.value)
             dailyWeatherViewModel.fetchDailyWeather(selectedLatitude.value, selectedLongitude.value)
             hourlyWeatherViewModel.fetchHourlyWeather(
                 selectedLatitude.value,
-                selectedLongitude.value
+                selectedLongitude.value,
             )
         } else if (refreshWeather || permissionStatus || switchState.value) {
             viewModel.fetchCurrentWeather(context)
@@ -98,49 +97,50 @@ fun AllWeatherComposable(
             hourlyWeatherViewModel.fetchHourlyWeather()
         }
         refreshWeather = false
-
     }
 
     val city = viewModel.city.collectAsState()
     val hourlyWeatherState = hourlyWeatherViewModel.state.collectAsState()
 
     if (state.value.isLoading) {
-        CircularProgressBar()
+        circularProgressBar()
     } else if (state.value.error != null) {
-        ErrorText(state.value.error ?: "")
+        errorText(state.value.error ?: "")
     } else {
-        AllWeatherLoadedComposable(
+        allWeatherLoadedComposable(
             navController = navController,
             state = state.value,
             dailyState = dailyState.value,
             city = city.value,
             hourlyWeatherState = hourlyWeatherState.value,
-            onRefreshClick = { refreshWeather = true })
+            onRefreshClick = { refreshWeather = true },
+        )
     }
 }
 
 @Composable
-fun ErrorText(text: String) {
+fun errorText(text: String) {
     Text(
         text = text,
         color = Color.Red,
         textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .wrapContentHeight(Alignment.CenterVertically)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .wrapContentHeight(Alignment.CenterVertically),
     )
 }
 
 @Composable
-fun CircularProgressBar() {
+fun circularProgressBar() {
     Box(contentAlignment = Alignment.Center) {
         CircularProgressIndicator(
-            modifier = Modifier
-                .size(70.dp)
-                .padding(16.dp)
-                .wrapContentSize(Alignment.Center)
+            modifier =
+                Modifier
+                    .size(70.dp)
+                    .padding(16.dp)
+                    .wrapContentSize(Alignment.Center),
         )
     }
-
 }

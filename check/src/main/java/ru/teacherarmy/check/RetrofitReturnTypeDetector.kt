@@ -11,27 +11,31 @@ import org.jetbrains.uast.UMethod
 import org.jetbrains.uast.UParameter
 import org.jetbrains.uast.getContainingUClass
 
-internal abstract class RetrofitReturnTypeDetector : Detector(), UastScanner {
-
+internal abstract class RetrofitReturnTypeDetector :
+    Detector(),
+    UastScanner {
     override fun getApplicableUastTypes(): List<Class<UMethod>> = listOf(UMethod::class.java)
 
-    abstract class Visitor(private val context: JavaContext) : UElementHandler() {
+    abstract class Visitor(
+        private val context: JavaContext,
+    ) : UElementHandler() {
+        private val listOfRetrofitAnnotations =
+            listOf(
+                "retrofit2.http.DELETE",
+                "retrofit2.http.GET",
+                "retrofit2.http.POST",
+                "retrofit2.http.PUT",
+                "DELETE",
+                "GET",
+                "POST",
+                "PUT",
+            )
 
-        private val listOfRetrofitAnnotations = listOf(
-            "retrofit2.http.DELETE",
-            "retrofit2.http.GET",
-            "retrofit2.http.POST",
-            "retrofit2.http.PUT",
-            "DELETE",
-            "GET",
-            "POST",
-            "PUT"
-        )
-
-        private val listOfRetrofitBodyAnnotations = listOf(
-            "retrofit2.http.Body",
-            "Body"
-        )
+        private val listOfRetrofitBodyAnnotations =
+            listOf(
+                "retrofit2.http.Body",
+                "Body",
+            )
 
         /**
          * Return all field of return type of a retrofit interface method.
@@ -65,27 +69,24 @@ internal abstract class RetrofitReturnTypeDetector : Detector(), UastScanner {
             return node.uastParameters.filter { hasBodyAnnotation(it) }.toSet()
         }
 
-        private fun PsiClassType.isNotUnitOrVoid() =
-            !canonicalText.contains("Unit") && !canonicalText.contains("Void")
+        private fun PsiClassType.isNotUnitOrVoid() = !canonicalText.contains("Unit") && !canonicalText.contains("Void")
 
         private fun PsiClassType.isResponseBody() = canonicalText.contains("ResponseBody")
 
-        private fun hasBodyAnnotation(parameter: UParameter): Boolean {
-            return context
+        private fun hasBodyAnnotation(parameter: UParameter): Boolean =
+            context
                 .evaluator
                 .getAllAnnotations(parameter as UAnnotated, true)
                 .map { uAnnotation -> uAnnotation.qualifiedName }
                 .intersect(listOfRetrofitBodyAnnotations)
                 .isNotEmpty()
-        }
 
-        private fun hasRetrofitAnnotation(method: UMethod): Boolean {
-            return context
+        private fun hasRetrofitAnnotation(method: UMethod): Boolean =
+            context
                 .evaluator
                 .getAllAnnotations(method as UAnnotated, true)
                 .map { uAnnotation -> uAnnotation.qualifiedName }
                 .intersect(listOfRetrofitAnnotations)
                 .isNotEmpty()
-        }
     }
 }

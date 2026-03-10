@@ -2,36 +2,42 @@ package ru.teacherarmy.domain.model
 
 sealed class WeatherType(
     val weatherDesc: String,
-
-    ) {
+) {
     object ClearSky : WeatherType(
-        weatherDesc = "ясно"
+        weatherDesc = "ясно",
     )
+
     object FewClouds : WeatherType(
-        weatherDesc = "малооблачно"
+        weatherDesc = "малооблачно",
     )
+
     object ShowerRain : WeatherType(
-        weatherDesc = "ливень"
+        weatherDesc = "ливень",
     )
+
     object Overcast : WeatherType(
-        weatherDesc = "облачно с прояснениями"
+        weatherDesc = "облачно с прояснениями",
     )
+
     object ScatteredClouds : WeatherType(
-        weatherDesc = "пасмурно"
+        weatherDesc = "пасмурно",
     )
+
     object Rain : WeatherType(
-        weatherDesc = "дождь"
+        weatherDesc = "дождь",
     )
+
     object Snow : WeatherType(
-        weatherDesc = "небольшой снег"
+        weatherDesc = "небольшой снег",
     )
+
     object Mist : WeatherType(
-        weatherDesc = "туман"
+        weatherDesc = "туман",
     )
 
     companion object {
-        fun fromWMO(code: Int): WeatherType {
-            return when(code) {
+        fun fromWMO(code: Int): WeatherType =
+            when (code) {
                 800 -> ClearSky
                 801 -> FewClouds
                 802 -> Overcast
@@ -42,6 +48,5 @@ sealed class WeatherType(
                 200 -> Mist
                 else -> ClearSky
             }
-        }
     }
 }

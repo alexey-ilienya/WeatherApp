@@ -7,10 +7,10 @@ data class CityRecord(
     val country: String,
     val timezone: Int,
     val sunrise: Int,
-    val sunset: Int
+    val sunset: Int,
 )
 
 data class Coord(
     val lat: Double,
-    val lon: Double
+    val lon: Double,
 )

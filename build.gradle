@@ -8,9 +8,19 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.android.lint) apply false
     alias(libs.plugins.detekt)
+    alias(libs.plugins.ktlint)
 }
 
 detekt {
     config.setFrom(file("config/detekt/detekt.yml"))
     buildUponDefaultConfig = true
+}
+
+subprojects {
+    apply plugin: "org.jlleitschuh.gradle.ktlint" // Version should be inherited from parent
+
+    // Optionally configure plugin
+    ktlint {
+        debug = true
+    }
 }

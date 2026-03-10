@@ -43,53 +43,57 @@ import ru.teacherarmy.presentation.viewmodels.SearchCityViewModel
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchLocation(navController: NavHostController, viewModel: SearchCityViewModel) {
+fun searchLocation(
+    navController: NavHostController,
+    viewModel: SearchCityViewModel,
+) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val state by viewModel.state.collectAsState()
     val searchText by viewModel.searchText.collectAsState()
 
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            SearchTopAppBar(
+            searchTopAppBar(
                 navController = navController,
                 searchText = searchText,
                 scrollBehavior = scrollBehavior,
                 onTextChange = {
                     viewModel.onSearchTextChange(it)
-                }
+                },
             )
         },
     ) {
         if (!state.isLoading) {
             state.data?.let {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxSize(),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
-
-                    ) {
+                ) {
                     Spacer(modifier = Modifier.height(60.dp))
 
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(top = 16.dp, start = 30.dp)
+                        contentPadding = PaddingValues(top = 16.dp, start = 30.dp),
                     ) {
                         items(it) {
-
                             Text(
                                 text = it.name ?: "",
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .align(Alignment.CenterHorizontally)
-                                    .clickable {
-                                        viewModel.insertCity(it.toDomainModel())
-                                        navController.popBackStack()
-                                        navController.clearBackStack(NavScreen.Search.route)
-                                    }
+                                modifier =
+                                    Modifier
+                                        .padding(16.dp)
+                                        .align(Alignment.CenterHorizontally)
+                                        .clickable {
+                                            viewModel.insertCity(it.toDomainModel())
+                                            navController.popBackStack()
+                                            navController.clearBackStack(NavScreen.Search.route)
+                                        },
                             )
                         }
                     }
@@ -100,11 +104,12 @@ fun SearchLocation(navController: NavHostController, viewModel: SearchCityViewMo
         if (state.error != null) {
             Text(
                 text = "Error: ${state.error}",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .wrapContentWidth(Alignment.CenterHorizontally),
-                color = Color.Red
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .wrapContentWidth(Alignment.CenterHorizontally),
+                color = Color.Red,
             )
         }
     }
@@ -113,35 +118,37 @@ fun SearchLocation(navController: NavHostController, viewModel: SearchCityViewMo
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchTopAppBar(
+fun searchTopAppBar(
     navController: NavHostController,
     searchText: String,
     scrollBehavior: TopAppBarScrollBehavior,
-    onTextChange: (String) -> Unit
+    onTextChange: (String) -> Unit,
 ) {
     TopAppBar(
         title = { },
         navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "back")
-
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "back",
+                )
             }
         },
         scrollBehavior = scrollBehavior,
         actions = {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 40.dp),
-                contentAlignment = Alignment.CenterEnd
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(start = 40.dp),
+                contentAlignment = Alignment.CenterEnd,
             ) {
                 TextField(
                     value = searchText,
                     onValueChange = {
                         onTextChange(it)
                     },
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     placeholder = {
                         Text(stringResource(R.string.search_hint))
                     },
@@ -152,15 +159,15 @@ fun SearchTopAppBar(
                     onClick = {
                         onTextChange("")
                     },
-                    modifier = Modifier.padding(end = 8.dp)
+                    modifier = Modifier.padding(end = 8.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Clear,
                         contentDescription = "Clear",
-                        tint = Color.Gray
+                        tint = Color.Gray,
                     )
                 }
             }
-        }
+        },
     )
 }

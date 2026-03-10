@@ -17,5 +17,5 @@ data class DailyForecast(
     val gust: Double,
     val clouds: Int,
     val rain: Double,
-    val snow: Double
+    val snow: Double,
 )

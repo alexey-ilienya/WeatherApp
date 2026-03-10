@@ -6,5 +6,5 @@ data class WindInfo(
     val speed: Double,
     @SerializedName("deg")
     val degrees: Double,
-    val gust: Double
+    val gust: Double,
 )

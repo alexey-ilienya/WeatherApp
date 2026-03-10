@@ -15,5 +15,5 @@ data class MainWeatherInfo(
     @SerializedName("sea_level")
     val seaLevel: Double,
     @SerializedName("grnd_level")
-    val groundLevel: Double
+    val groundLevel: Double,
 )

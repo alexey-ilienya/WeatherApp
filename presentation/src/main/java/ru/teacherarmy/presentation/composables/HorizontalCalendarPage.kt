@@ -1,0 +1,186 @@
+package ru.teacherarmy.presentation.composables
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
+import ru.teacherarmy.calendar.composables.LocalScaffoldPaddingValues
+import ru.teacherarmy.calendar.composables.horizontalCalendar
+import ru.teacherarmy.calendar.composables.rememberCalendarState
+import ru.teacherarmy.calendar.composables.simpleCalendarTitle
+import ru.teacherarmy.calendar.extensions.clickable
+import ru.teacherarmy.calendar.extensions.daysOfWeek
+import ru.teacherarmy.calendar.extensions.displayText
+import ru.teacherarmy.calendar.extensions.nextMonth
+import ru.teacherarmy.calendar.extensions.previousMonth
+import ru.teacherarmy.calendar.extensions.rememberFirstMostVisibleMonth
+import ru.teacherarmy.calendar.model.CalendarDay
+import ru.teacherarmy.calendar.model.DayPosition
+import ru.teacherarmy.presentation.R
+import java.time.DayOfWeek
+import java.time.YearMonth
+
+@Composable
+fun horizontalCalendarPage(
+    adjacentMonths: Long = 500,
+    close: () -> Unit = {},
+) {
+    val currentMonth = remember { YearMonth.now() }
+    val startMonth = remember { currentMonth.minusMonths(adjacentMonths) }
+    val endMonth = remember { currentMonth.plusMonths(adjacentMonths) }
+    val selections = remember { mutableStateListOf<CalendarDay>() }
+    val daysOfWeek = remember { daysOfWeek() }
+    Column(
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(LocalScaffoldPaddingValues.current),
+    ) {
+        val state =
+            rememberCalendarState(
+                startMonth = startMonth,
+                endMonth = endMonth,
+                firstVisibleMonth = currentMonth,
+                firstDayOfWeek = daysOfWeek.first(),
+            )
+        val coroutineScope = rememberCoroutineScope()
+        val visibleMonth = rememberFirstMostVisibleMonth(state, viewportPercent = 90f)
+        Row(
+            modifier = Modifier.height(IntrinsicSize.Max),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                modifier =
+                    Modifier
+                        .fillMaxHeight()
+                        .aspectRatio(1f)
+                        .clip(CircleShape)
+                        .clickable(
+                            enabled = true,
+                            showRipple = true,
+                            onClick = close,
+                        ).padding(12.dp),
+                painter = painterResource(id = R.drawable.ic_close),
+                contentDescription = "Close",
+            )
+            simpleCalendarTitle(
+                modifier = Modifier.padding(vertical = 10.dp, horizontal = 8.dp),
+                currentMonth = visibleMonth.yearMonth,
+                goToPrevious = {
+                    coroutineScope.launch {
+                        state.animateScrollToMonth(state.firstVisibleMonth.yearMonth.previousMonth)
+                    }
+                },
+                goToNext = {
+                    coroutineScope.launch {
+                        state.animateScrollToMonth(state.firstVisibleMonth.yearMonth.nextMonth)
+                    }
+                },
+            )
+        }
+        horizontalCalendar(
+            modifier = Modifier.testTag("Calendar"),
+            state = state,
+            dayContent = { day ->
+                day(day, isSelected = selections.contains(day)) { clicked ->
+                    if (selections.contains(clicked)) {
+                        selections.remove(clicked)
+                    } else {
+                        selections.add(clicked)
+                    }
+                }
+            },
+            monthHeader = {
+                monthHeader(daysOfWeek = daysOfWeek)
+            },
+        )
+    }
+}
+
+@Composable
+private fun monthHeader(daysOfWeek: List<DayOfWeek>) {
+    Row(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .testTag("MonthHeader"),
+    ) {
+        for (dayOfWeek in daysOfWeek) {
+            Text(
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.Center,
+                fontSize = 15.sp,
+                text = dayOfWeek.displayText(),
+                fontWeight = FontWeight.Medium,
+            )
+        }
+    }
+}
+
+@Composable
+private fun day(
+    day: CalendarDay,
+    isSelected: Boolean,
+    onClick: (CalendarDay) -> Unit,
+) {
+    Box(
+        modifier =
+            Modifier
+                .aspectRatio(1f) // This is important for square-sizing!
+                .testTag("MonthDay")
+                .padding(6.dp)
+                .clip(CircleShape)
+                .background(color = if (isSelected) colorResource(R.color.example_1_selection_color) else Color.Transparent)
+                .clickable(
+                    enabled = day.position == DayPosition.MonthDate,
+                    showRipple = !isSelected,
+                    onClick = { onClick(day) },
+                ),
+        contentAlignment = Alignment.Center,
+    ) {
+        val textColor =
+            when (day.position) {
+                DayPosition.MonthDate -> if (isSelected) Color.White else Color.Unspecified
+                DayPosition.InDate, DayPosition.OutDate -> colorResource(R.color.inactive_text_color)
+            }
+        Text(
+            text = day.date.dayOfMonth.toString(),
+            color = textColor,
+            fontSize = 14.sp,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun horizontalCalendarPreview() {
+    horizontalCalendarPage()
+}

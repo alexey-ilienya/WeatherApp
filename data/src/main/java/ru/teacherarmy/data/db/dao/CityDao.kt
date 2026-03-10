@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import ru.teacherarmy.data.model.CityEntity
 
 @Dao
-interface CityDao{
+interface CityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCity(city: CityEntity)
 
