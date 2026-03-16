@@ -54,6 +54,8 @@ dependencies {
     implementation libs.androidx.compose.material3
     implementation libs.androidx.compose.material.icons
 
+    implementation libs.lottie.compose
+
     implementation project(':domain')
     implementation project(':data')
     implementation project(':calendar')

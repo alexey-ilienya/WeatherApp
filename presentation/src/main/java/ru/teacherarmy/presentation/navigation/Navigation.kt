@@ -9,15 +9,28 @@ import ru.teacherarmy.presentation.composables.allWeatherComposable
 import ru.teacherarmy.presentation.composables.horizontalCalendarPage
 import ru.teacherarmy.presentation.composables.locationsScreen
 import ru.teacherarmy.presentation.composables.searchLocation
+import ru.teacherarmy.presentation.composables.splashScreen
 import ru.teacherarmy.presentation.composables.verticalCalendarPage
 
 @Composable
 fun appNavigation(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = NavScreen.Home.route,
+        startDestination = NavScreen.Splash.route,
     ) {
-        composable(NavScreen.Home.route) { backStackEntry ->
+        composable(NavScreen.Splash.route) { _ ->
+            splashScreen(
+                onAnimationEnd = {
+                    navController.navigate(route = NavScreen.Home.route) {
+                        popUpTo(NavScreen.Splash.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+            )
+        }
+
+        composable(NavScreen.Home.route) { _ ->
             allWeatherComposable(
                 navController,
                 searchCityViewModel = hiltViewModel(),
@@ -27,21 +40,21 @@ fun appNavigation(navController: NavHostController) {
             )
         }
 
-        composable(NavScreen.Locations.route) { backStackEntry ->
+        composable(NavScreen.Locations.route) { _ ->
             locationsScreen(
                 navController,
                 hiltViewModel(),
             )
         }
 
-        composable(NavScreen.Search.route) { backStackEntry ->
+        composable(NavScreen.Search.route) { _ ->
             searchLocation(
                 navController,
                 hiltViewModel(),
             )
         }
 
-        composable(BottomNavItem.HORIZONTAL.route) { backStackEntry ->
+        composable(BottomNavItem.HORIZONTAL.route) { _ ->
             horizontalCalendarPage(
                 close = { navController.popBackStack() },
             )

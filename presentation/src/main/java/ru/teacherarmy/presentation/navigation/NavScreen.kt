@@ -10,6 +10,8 @@ sealed class NavScreen(
     val name: String,
     val route: String,
 ) {
+    object Splash : NavScreen(name = "Splash", route = "splash")
+
     object Home : NavScreen(name = "Home", route = "home")
 
     object Locations : NavScreen(name = "Locations", route = "location")
