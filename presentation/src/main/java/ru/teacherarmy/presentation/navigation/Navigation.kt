@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import ru.teacherarmy.presentation.composables.allWeatherComposable
+import ru.teacherarmy.presentation.composables.chartPage
 import ru.teacherarmy.presentation.composables.horizontalCalendarPage
 import ru.teacherarmy.presentation.composables.locationsScreen
 import ru.teacherarmy.presentation.composables.searchLocation
@@ -64,6 +65,12 @@ fun appNavigation(navController: NavHostController) {
             verticalCalendarPage(
                 close = { navController.popBackStack() },
                 dateSelected = { startDate, endDate -> },
+            )
+        }
+
+        composable(BottomNavItem.CHART.route) {
+            chartPage(
+                close = { navController.popBackStack() },
             )
         }
     }
