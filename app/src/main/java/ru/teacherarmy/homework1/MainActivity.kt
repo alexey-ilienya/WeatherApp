@@ -14,7 +14,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.teacherarmy.homework1.ui.theme.weatherAppTheme
-import ru.teacherarmy.presentation.composables.bottomNavigationBar
+import ru.teacherarmy.presentation.composables.BottomNavigationBar
 import ru.teacherarmy.presentation.navigation.NavScreen
 import ru.teacherarmy.presentation.navigation.appNavigation
 
@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         bottomBar = {
                             if (navBackStackEntry?.destination?.route != NavScreen.Splash.route) {
-                                bottomNavigationBar(navController = navController)
+                                BottomNavigationBar(navController = navController)
                             }
                         },
                         content = { _ ->

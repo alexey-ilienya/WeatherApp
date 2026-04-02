@@ -5,13 +5,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import ru.teacherarmy.presentation.composables.allWeatherComposable
-import ru.teacherarmy.presentation.composables.chartPage
-import ru.teacherarmy.presentation.composables.horizontalCalendarPage
-import ru.teacherarmy.presentation.composables.locationsScreen
-import ru.teacherarmy.presentation.composables.searchLocation
-import ru.teacherarmy.presentation.composables.splashScreen
-import ru.teacherarmy.presentation.composables.verticalCalendarPage
+import ru.teacherarmy.presentation.composables.AllWeatherComposable
+import ru.teacherarmy.presentation.composables.ChartPage
+import ru.teacherarmy.presentation.composables.HorizontalCalendarPage
+import ru.teacherarmy.presentation.composables.LocationsScreen
+import ru.teacherarmy.presentation.composables.SearchLocation
+import ru.teacherarmy.presentation.composables.SplashScreen
+import ru.teacherarmy.presentation.composables.VerticalCalendarPage
 
 @Composable
 fun appNavigation(navController: NavHostController) {
@@ -20,7 +20,7 @@ fun appNavigation(navController: NavHostController) {
         startDestination = NavScreen.Splash.route,
     ) {
         composable(NavScreen.Splash.route) { _ ->
-            splashScreen(
+            SplashScreen(
                 onAnimationEnd = {
                     navController.navigate(route = NavScreen.Home.route) {
                         popUpTo(NavScreen.Splash.route) {
@@ -32,7 +32,7 @@ fun appNavigation(navController: NavHostController) {
         }
 
         composable(NavScreen.Home.route) { _ ->
-            allWeatherComposable(
+            AllWeatherComposable(
                 navController,
                 searchCityViewModel = hiltViewModel(),
                 viewModel = hiltViewModel(),
@@ -42,34 +42,34 @@ fun appNavigation(navController: NavHostController) {
         }
 
         composable(NavScreen.Locations.route) { _ ->
-            locationsScreen(
+            LocationsScreen(
                 navController,
                 hiltViewModel(),
             )
         }
 
         composable(NavScreen.Search.route) { _ ->
-            searchLocation(
+            SearchLocation(
                 navController,
                 hiltViewModel(),
             )
         }
 
         composable(BottomNavItem.HORIZONTAL.route) { _ ->
-            horizontalCalendarPage(
+            HorizontalCalendarPage(
                 close = { navController.popBackStack() },
             )
         }
 
         composable(BottomNavItem.VERTICAL.route) { backStackEntry ->
-            verticalCalendarPage(
+            VerticalCalendarPage(
                 close = { navController.popBackStack() },
                 dateSelected = { startDate, endDate -> },
             )
         }
 
         composable(BottomNavItem.CHART.route) {
-            chartPage(
+            ChartPage(
                 close = { navController.popBackStack() },
             )
         }

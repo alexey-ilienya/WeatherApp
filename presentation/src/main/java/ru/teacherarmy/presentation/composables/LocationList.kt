@@ -52,7 +52,7 @@ import ru.teacherarmy.presentation.viewmodels.SearchCityViewModel
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun locationsScreen(
+fun LocationsScreen(
     navController: NavHostController,
     searchCityViewModel: SearchCityViewModel,
 ) {
@@ -60,7 +60,7 @@ fun locationsScreen(
     val allCities by searchCityViewModel.allCities.collectAsState(emptyList())
     val selectedCity by searchCityViewModel.selectedCity.collectAsState()
 
-    locationsScreenContent(
+    LocationsScreenContent(
         switchState = switchState,
         allCities = allCities,
         selectedCity = selectedCity,
@@ -82,7 +82,7 @@ fun locationsScreen(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun locationsScreenContent(
+fun LocationsScreenContent(
     switchState: Boolean,
     allCities: List<City>,
     selectedCity: City?,
@@ -127,8 +127,8 @@ fun locationsScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(90.dp))
-            switchWithIcon(switchState, { clearSelectedCity.invoke(it) })
-            locationList(
+            SwitchWithIcon(switchState, { clearSelectedCity.invoke(it) })
+            LocationList(
                 allCities = allCities,
                 selectedCity = selectedCity,
                 { selectCity.invoke(it) },
@@ -149,7 +149,7 @@ fun locationsScreenContent(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun locationList(
+fun LocationList(
     allCities: List<City>,
     selectedCity: City?,
     setSelectedCityAction: (City) -> Unit,
@@ -191,7 +191,7 @@ fun locationList(
 }
 
 @Composable
-fun switchWithIcon(
+fun SwitchWithIcon(
     value: Boolean,
     onSwitchAction: (Boolean) -> Unit,
 ) {
@@ -223,8 +223,8 @@ fun switchWithIcon(
 
 @Preview
 @Composable
-private fun locationsScreenPreview() {
-    locationsScreenContent(
+private fun LocationsScreenPreview() {
+    LocationsScreenContent(
         switchState = true,
         allCities =
             arrayListOf(

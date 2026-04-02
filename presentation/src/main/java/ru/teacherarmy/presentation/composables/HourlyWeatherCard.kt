@@ -31,7 +31,7 @@ import ru.teacherarmy.presentation.states.HourlyWeatherState
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun hourlyWeather(
+fun HourlyWeather(
     state: HourlyWeatherState,
     modifier: Modifier,
 ) {
@@ -60,7 +60,7 @@ fun hourlyWeather(
             )
             LazyColumn {
                 items(it) { hourlyWeather ->
-                    hourlyWeatherItem(hourlyWeather)
+                    HourlyWeatherItem(hourlyWeather)
                 }
             }
         }
@@ -68,7 +68,7 @@ fun hourlyWeather(
 }
 
 @Composable
-fun hourlyWeatherItem(hourlyWeather: Hourly) {
+fun HourlyWeatherItem(hourlyWeather: Hourly) {
     val dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
     Row(

@@ -22,5 +22,6 @@ subprojects {
     // Optionally configure plugin
     ktlint {
         debug = true
+        additionalEditorconfig = ["ktlint_function_naming_ignore_when_annotated_with": "Composable"]
     }
 }

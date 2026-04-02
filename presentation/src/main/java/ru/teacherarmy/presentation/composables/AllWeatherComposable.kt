@@ -36,7 +36,7 @@ import ru.teacherarmy.presentation.viewmodels.SearchCityViewModel
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun allWeatherComposable(
+fun AllWeatherComposable(
     navController: NavHostController,
     viewModel: CurrentWeatherViewModel,
     dailyWeatherViewModel: DailyWeatherViewModel,
@@ -103,11 +103,11 @@ fun allWeatherComposable(
     val hourlyWeatherState = hourlyWeatherViewModel.state.collectAsState()
 
     if (state.value.isLoading) {
-        circularProgressBar()
+        CircularProgressBar()
     } else if (state.value.error != null) {
-        errorText(state.value.error ?: "")
+        ErrorText(state.value.error ?: "")
     } else {
-        allWeatherLoadedComposable(
+        AllWeatherLoadedComposable(
             navController = navController,
             state = state.value,
             dailyState = dailyState.value,
@@ -119,7 +119,7 @@ fun allWeatherComposable(
 }
 
 @Composable
-fun errorText(text: String) {
+fun ErrorText(text: String) {
     Text(
         text = text,
         color = Color.Red,
@@ -133,7 +133,7 @@ fun errorText(text: String) {
 }
 
 @Composable
-fun circularProgressBar() {
+fun CircularProgressBar() {
     Box(contentAlignment = Alignment.Center) {
         CircularProgressIndicator(
             modifier =

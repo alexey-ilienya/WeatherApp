@@ -4,6 +4,6 @@ import androidx.compose.ui.graphics.Color
 
 data class Pie(
     val data: Double,
-    val color: Color,
+    var color: Color = Color.Black,
     val selectedScale: Float = 1.25f,
 )

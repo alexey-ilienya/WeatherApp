@@ -43,7 +43,7 @@ import ru.teacherarmy.presentation.viewmodels.SearchCityViewModel
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun searchLocation(
+fun SearchLocation(
     navController: NavHostController,
     viewModel: SearchCityViewModel,
 ) {
@@ -57,7 +57,7 @@ fun searchLocation(
                 .fillMaxSize()
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            searchTopAppBar(
+            SearchTopAppBar(
                 navController = navController,
                 searchText = searchText,
                 scrollBehavior = scrollBehavior,
@@ -118,7 +118,7 @@ fun searchLocation(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun searchTopAppBar(
+fun SearchTopAppBar(
     navController: NavHostController,
     searchText: String,
     scrollBehavior: TopAppBarScrollBehavior,

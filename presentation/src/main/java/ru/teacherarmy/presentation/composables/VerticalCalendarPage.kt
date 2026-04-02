@@ -63,7 +63,7 @@ private val selectionColor = primaryColor
 private val continuousSelectionColor = Color.LightGray.copy(alpha = 0.3f)
 
 @Composable
-fun verticalCalendarPage(
+fun VerticalCalendarPage(
     close: () -> Unit = {},
     dateSelected: (startDate: LocalDate, endDate: LocalDate) -> Unit = { _, _ -> },
 ) {
@@ -90,7 +90,7 @@ fun verticalCalendarPage(
                         firstVisibleMonth = currentMonth,
                         firstDayOfWeek = daysOfWeek.first(),
                     )
-                calendarTop(
+                CalendarTop(
                     daysOfWeek = daysOfWeek,
                     selection = selection,
                     close = close,
@@ -100,7 +100,7 @@ fun verticalCalendarPage(
                     state = state,
                     contentPadding = PaddingValues(bottom = 100.dp),
                     dayContent = { value ->
-                        day(
+                        Day(
                             value,
                             today = today,
                             selection = selection,
@@ -116,10 +116,10 @@ fun verticalCalendarPage(
                             }
                         }
                     },
-                    monthHeader = { month -> monthHeader(month) },
+                    monthHeader = { month -> MonthHeader(month) },
                 )
             }
-            calendarBottom(
+            CalendarBottom(
                 modifier =
                     Modifier
                         .wrapContentHeight()
@@ -139,7 +139,7 @@ fun verticalCalendarPage(
 }
 
 @Composable
-private fun day(
+private fun Day(
     day: CalendarDay,
     today: LocalDate,
     selection: DateSelection,
@@ -176,7 +176,7 @@ private fun day(
 }
 
 @Composable
-private fun monthHeader(calendarMonth: CalendarMonth) {
+private fun MonthHeader(calendarMonth: CalendarMonth) {
     Box(
         modifier =
             Modifier
@@ -193,7 +193,7 @@ private fun monthHeader(calendarMonth: CalendarMonth) {
 }
 
 @Composable
-private fun calendarTop(
+private fun CalendarTop(
     modifier: Modifier = Modifier,
     daysOfWeek: List<DayOfWeek>,
     selection: DateSelection,
@@ -277,7 +277,7 @@ private fun calendarTop(
 }
 
 @Composable
-private fun calendarBottom(
+private fun CalendarBottom(
     modifier: Modifier = Modifier,
     selection: DateSelection,
     save: () -> Unit,
@@ -309,6 +309,6 @@ private fun calendarBottom(
 
 @Preview
 @Composable
-private fun example2Preview() {
-    verticalCalendarPage()
+private fun Example2Preview() {
+    VerticalCalendarPage()
 }

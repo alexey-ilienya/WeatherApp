@@ -38,7 +38,7 @@ import java.util.EnumMap
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun allWeatherLoadedComposable(
+fun AllWeatherLoadedComposable(
     navController: NavHostController,
     state: CurrentWeatherState,
     dailyState: DailyWeatherState,
@@ -46,7 +46,7 @@ fun allWeatherLoadedComposable(
     hourlyWeatherState: HourlyWeatherState,
     onRefreshClick: () -> Unit,
 ) {
-    allWeatherLoadedComposableContent(
+    AllWeatherLoadedComposableContent(
         state = state,
         dailyState = dailyState,
         city = city,
@@ -59,7 +59,7 @@ fun allWeatherLoadedComposable(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun allWeatherLoadedComposableContent(
+fun AllWeatherLoadedComposableContent(
     state: CurrentWeatherState,
     dailyState: DailyWeatherState,
     city: String,
@@ -103,14 +103,14 @@ fun allWeatherLoadedComposableContent(
         ) {
             item {
                 Spacer(modifier = Modifier.height(90.dp))
-                currentWeatherCard(
+                CurrentWeatherCard(
                     currentState = state,
                     modifier = Modifier,
                     dailyState = dailyState,
                     city = city,
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                hourlyWeather(state = hourlyWeatherState, modifier = Modifier)
+                HourlyWeather(state = hourlyWeatherState, modifier = Modifier)
             }
         }
     }
@@ -118,8 +118,8 @@ fun allWeatherLoadedComposableContent(
 
 @Preview
 @Composable
-private fun allWeatherLoadedComposablePreview() {
-    allWeatherLoadedComposableContent(
+private fun AllWeatherLoadedComposablePreview() {
+    AllWeatherLoadedComposableContent(
         state =
             CurrentWeatherState(
                 isLoading = false,
