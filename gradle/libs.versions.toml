@@ -24,6 +24,7 @@ lint = '31.5.1'
 ktlint = "14.0.1"
 runtimeAnnotation = "1.10.3"
 runtime = "1.10.3"
+lottieCompose = "6.7.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -76,6 +77,8 @@ faire-detekt-rules = { module = "com.faire:faire-detekt-rules", version = "0.5.3
 hbmartin-detekt-rules = { module = "me.haroldmartin:hbmartin-detekt-rules", version = "0.1.7" }
 androidx-compose-runtime-annotation = { group = "androidx.compose.runtime", name = "runtime-annotation", version.ref = "runtimeAnnotation" }
 #androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
+
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 
 [bundles]
 lint-api = [

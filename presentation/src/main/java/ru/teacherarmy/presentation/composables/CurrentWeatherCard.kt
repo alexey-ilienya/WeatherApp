@@ -24,7 +24,7 @@ import ru.teacherarmy.presentation.states.CurrentWeatherState
 import ru.teacherarmy.presentation.states.DailyWeatherState
 
 @Composable
-fun currentWeatherCard(
+fun CurrentWeatherCard(
     modifier: Modifier,
     currentState: CurrentWeatherState,
     dailyState: DailyWeatherState,
@@ -86,7 +86,7 @@ fun currentWeatherCard(
                     thickness = 0.3.dp,
                 )
 
-                dailyWeather(state = dailyState)
+                DailyWeather(state = dailyState)
             }
         }
     }

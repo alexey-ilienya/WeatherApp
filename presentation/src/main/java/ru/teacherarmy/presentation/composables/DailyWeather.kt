@@ -23,23 +23,23 @@ import java.time.DayOfWeek
 import java.time.format.TextStyle
 
 @Composable
-fun dailyWeather(state: DailyWeatherState) {
-    weatherLazyRow(weatherData = state.data)
+fun DailyWeather(state: DailyWeatherState) {
+    WeatherLazyRow(weatherData = state.data)
 }
 
 @Composable
-fun weatherLazyRow(weatherData: Map<DayOfWeek, List<Daily>>?) {
+fun WeatherLazyRow(weatherData: Map<DayOfWeek, List<Daily>>?) {
     LazyRow {
         weatherData?.entries?.let {
             items(it.toList()) { (dayOfWeek, dailyWeatherList) ->
-                weatherItem(dayOfWeek, dailyWeatherList)
+                WeatherItem(dayOfWeek, dailyWeatherList)
             }
         }
     }
 }
 
 @Composable
-fun weatherItem(
+fun WeatherItem(
     dayOfWeek: DayOfWeek,
     dailyWeatherList: List<Daily>,
 ) {

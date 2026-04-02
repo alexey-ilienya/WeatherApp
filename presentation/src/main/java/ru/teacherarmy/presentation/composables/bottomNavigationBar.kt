@@ -16,7 +16,7 @@ import ru.teacherarmy.presentation.R
 import ru.teacherarmy.presentation.navigation.BottomNavItem
 
 @Composable
-fun bottomNavigationBar(navController: NavHostController) {
+fun BottomNavigationBar(navController: NavHostController) {
     NavigationBar(
         containerColor = colorResource(R.color.nav_container_color),
     ) {

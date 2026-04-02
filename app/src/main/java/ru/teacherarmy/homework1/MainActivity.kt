@@ -8,11 +8,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.teacherarmy.homework1.ui.theme.weatherAppTheme
-import ru.teacherarmy.presentation.composables.bottomNavigationBar
+import ru.teacherarmy.presentation.composables.BottomNavigationBar
+import ru.teacherarmy.presentation.navigation.NavScreen
 import ru.teacherarmy.presentation.navigation.appNavigation
 
 @AndroidEntryPoint
@@ -23,13 +26,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             weatherAppTheme {
                 val navController = rememberNavController()
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
                     Scaffold(
                         bottomBar = {
-                            bottomNavigationBar(navController = navController)
+                            if (navBackStackEntry?.destination?.route != NavScreen.Splash.route) {
+                                BottomNavigationBar(navController = navController)
+                            }
                         },
                         content = { _ ->
                             appNavigation(navController = navController)

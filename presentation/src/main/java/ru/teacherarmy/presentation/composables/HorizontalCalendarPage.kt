@@ -48,7 +48,7 @@ import java.time.DayOfWeek
 import java.time.YearMonth
 
 @Composable
-fun horizontalCalendarPage(
+fun HorizontalCalendarPage(
     adjacentMonths: Long = 500,
     close: () -> Unit = {},
 ) {
@@ -110,7 +110,7 @@ fun horizontalCalendarPage(
             modifier = Modifier.testTag("Calendar"),
             state = state,
             dayContent = { day ->
-                day(day, isSelected = selections.contains(day)) { clicked ->
+                Day(day, isSelected = selections.contains(day)) { clicked ->
                     if (selections.contains(clicked)) {
                         selections.remove(clicked)
                     } else {
@@ -119,14 +119,14 @@ fun horizontalCalendarPage(
                 }
             },
             monthHeader = {
-                monthHeader(daysOfWeek = daysOfWeek)
+                MonthHeader(daysOfWeek = daysOfWeek)
             },
         )
     }
 }
 
 @Composable
-private fun monthHeader(daysOfWeek: List<DayOfWeek>) {
+private fun MonthHeader(daysOfWeek: List<DayOfWeek>) {
     Row(
         modifier =
             Modifier
@@ -146,7 +146,7 @@ private fun monthHeader(daysOfWeek: List<DayOfWeek>) {
 }
 
 @Composable
-private fun day(
+private fun Day(
     day: CalendarDay,
     isSelected: Boolean,
     onClick: (CalendarDay) -> Unit,
@@ -181,6 +181,6 @@ private fun day(
 
 @Preview
 @Composable
-private fun horizontalCalendarPreview() {
-    horizontalCalendarPage()
+private fun HorizontalCalendarPreview() {
+    HorizontalCalendarPage()
 }

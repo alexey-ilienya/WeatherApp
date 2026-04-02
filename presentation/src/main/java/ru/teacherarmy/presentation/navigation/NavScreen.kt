@@ -2,6 +2,7 @@ package ru.teacherarmy.presentation.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.EventNote
+import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.ui.graphics.vector.ImageVector
 import ru.teacherarmy.presentation.R
@@ -10,6 +11,8 @@ sealed class NavScreen(
     val name: String,
     val route: String,
 ) {
+    object Splash : NavScreen(name = "Splash", route = "splash")
+
     object Home : NavScreen(name = "Home", route = "home")
 
     object Locations : NavScreen(name = "Locations", route = "location")
@@ -25,4 +28,5 @@ enum class BottomNavItem(
 ) {
     HORIZONTAL("horizontalCalendar", R.string.labelHorizontal, Icons.Default.CalendarMonth, "horizontal"),
     VERTICAL("verticalCalendar", R.string.labelVertical, Icons.AutoMirrored.Filled.EventNote, "vertical"),
+    CHART("chart", R.string.labelChart, Icons.AutoMirrored.Filled.ShowChart, "chart"),
 }

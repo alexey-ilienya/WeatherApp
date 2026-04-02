@@ -13,6 +13,7 @@
 
     <string name="labelHorizontal">Горизонтальный календарь</string>
     <string name="labelVertical">Вертикальный календарь</string>
+    <string name="labelChart">Диаграмма</string>
 
     <plurals name="days">
         <item quantity="zero">Выберите даты</item>
